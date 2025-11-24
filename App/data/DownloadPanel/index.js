@@ -1,206 +1,243 @@
-'use strict';
-var advl = false;
+"use strict";
 
+// DOM Elements
+const elements = {
+  fileName: document.getElementById("fileName"),
+  filePath: document.getElementById("filePath"),
+  fileSize: document.getElementById("fileSize"),
+  url: document.getElementById("url"),
+  serverSelect: document.getElementById("serverSelect"),
+  headers: document.getElementById("headers"),
+  advancedSection: document.getElementById("advancedSection"),
+  toggleAdvanced: document.getElementById("toggleAdvanced"),
+  btnDownload: document.getElementById("btnDownload"),
+  btnSave: document.getElementById("btnSave"),
+  btnSaveAs: document.getElementById("btnSaveAs"),
+};
+
+let isAdvancedExpanded = false;
+
+// Handle response from background script
 function handleResponse(message) {
-	//console.log(message);
-	switch (message.response) {
-		case "all":
-			document.getElementById('url').value = message.url;
-			document.getElementById('fs').textContent = message.fileSize;
-			document.getElementById('fn').value = decodeFn(message.fileName);
-			document.querySelector(".head").value = message.header;
-			document.getElementById('db').focus();
-			break;
-		case "send success":
-			var getting = browser.windows.getCurrent();
-			getting.then(windowInfo => {
-				browser.windows.remove(windowInfo.id)
-			}, () => {});
-			break;
-		case "saveas create":
-			break;
-		default:
-			console.log("Message from the content script: " + request.get);
-	}
+  switch (message.response) {
+    case "all":
+      elements.url.value = message.url;
+      elements.fileSize.textContent = message.fileSize;
+      elements.fileName.value = decodeFn(message.fileName);
+      elements.headers.value = Array.isArray(message.header)
+        ? message.header.join("\n")
+        : message.header;
+      elements.btnDownload.focus();
+      break;
+    case "send success":
+      browser.windows.getCurrent().then((windowInfo) => {
+        browser.windows.remove(windowInfo.id);
+      });
+      break;
+    case "saveas create":
+      break;
+    default:
+      console.log("Message:", message);
+  }
 }
 
+// Handle errors
 function handleError(error) {
-	browser.notifications.create({
-		type: 'basic',
-		iconUrl: '/data/icons/48.png',
-		title: browser.i18n.getMessage("extensionName"),
-		message: error.message || error
-	});
-}
-//////////////////////////////////////////
-///////////////////////////////////////
-function init() {
-	var sending = browser.runtime.sendMessage({
-		get: "all"
-	});
-	sending.then(handleResponse, handleError);
-	document.documentElement.style.transformOrigin = "left top";
-	browser.storage.local.get(config.command.guess, (item) => {
-		document.documentElement.style.transform = "scale(" + item.zoom + ")";
-	});
-	document.getElementById('db').addEventListener('click', download);
-	document.getElementById('sb').addEventListener('click', save);
-	document.getElementById('sab').addEventListener('click', saveas);
-	document.getElementById('advb').addEventListener('click', adv);
-	document.querySelectorAll('[data-message]').forEach(n => {
-		n.textContent = browser.i18n.getMessage(n.dataset.message);
-	});
-	document.body.style = "direction: " + browser.i18n.getMessage("direction");
+  browser.notifications.create({
+    type: "basic",
+    iconUrl: "/data/icons/48.png",
+    title: browser.i18n.getMessage("extensionName"),
+    message: error.message || String(error),
+  });
 }
 
-function saveWinLoc (){
-	browser.storage.local.get(config.command.guess, (item) => {
-		if (item.windowLoc) {
-			var getting = browser.windows.getCurrent();
-			getting.then(windowInfo => {
-				browser.storage.local.set({
-					dpTop: windowInfo.top,
-					dpLeft: windowInfo.left
-				});
-			}, () => {});
-		}
-	});
+// Save window location if enabled
+function saveWinLoc() {
+  browser.storage.local.get(config.command.guess, (item) => {
+    if (item.windowLoc) {
+      browser.windows.getCurrent().then((windowInfo) => {
+        browser.storage.local.set({
+          dpTop: windowInfo.top,
+          dpLeft: windowInfo.left,
+        });
+      });
+    }
+  });
 }
 
-function download() {
-	const url = document.getElementById('url').value;
-	const fn = document.getElementById('fn').value;
-	const fp = document.getElementById('fp').value;
-	const head = document.querySelector(".head").value
-	const rpc = document.querySelector(".s1").value
-	verifyFileName(fn).then((e) => {
-		if (e.length != 0) {
-			document.getElementById('fn').style = "border: 1px solid red;box-shadow: red 0px 0px 4px;";
-			document.getElementById('fn').onchange = function() {
-				document.getElementById('fn').style = "";
-				document.getElementById('fn').onchange = null;
-			};
-		}
-		else {
-			var sending = browser.runtime.sendMessage({
-				get: "download",
-				url: url,
-				fileName: fn,
-				filePath: fp,
-				header: head.split(","),
-				server: rpc,
-			});
-			sending.then(handleResponse, handleError);
-			saveWinLoc();
-		}
-	});
+// Validate filename and show error if invalid
+function validateFileName() {
+  return new Promise((resolve) => {
+    const fn = elements.fileName.value;
+    verifyFileName(fn).then((errors) => {
+      if (errors.length > 0) {
+        elements.fileName.classList.add("error");
+        elements.fileName.addEventListener("input", function handler() {
+          elements.fileName.classList.remove("error");
+          elements.fileName.removeEventListener("input", handler);
+        });
+        resolve(false);
+      } else {
+        resolve(true);
+      }
+    });
+  });
 }
 
-function save() {
-	const url = document.getElementById('url').value;
-	const fn = document.getElementById('fn').value;
-	const fp = document.getElementById('fp').value;
-	const head = document.querySelector(".head").value
-	verifyFileName(fn).then((e) => {
-		if (e.length != 0) {
-			document.getElementById('fn').style = "border: 1px solid red;box-shadow: red 0px 0px 4px;";
-			document.getElementById('fn').onchange = function() {
-				document.getElementById('fn').style = "";
-				document.getElementById('fn').onchange = null;
-			};
-		}
-		else {
-			var getting = browser.windows.getCurrent();
-			getting.then((windowInfo) => {
-				var sending = browser.runtime.sendMessage({
-					get: "save",
-					url: url,
-					fileName: fn,
-					filePath: fp,
-					header: head.split(","),
-					incognito: windowInfo.incognito,
-				});
-				sending.then(handleResponse, handleError);
-			}, (e) => console.log(e));
-			saveWinLoc();
-		}
-	});
+// Get form data
+function getFormData() {
+  return {
+    url: elements.url.value,
+    fileName: elements.fileName.value,
+    filePath: elements.filePath.value,
+    header: elements.headers.value.split("\n").filter((h) => h.trim()),
+    server: elements.serverSelect.value,
+  };
 }
 
-function saveas() {
-	const url = document.getElementById('url').value;
-	const fn = document.getElementById('fn').value;
-	const fp = document.getElementById('fp').value;
-	const head = document.querySelector(".head").value
-	verifyFileName(fn).then((e) => {
-		if (e.length != 0) {
-			document.getElementById('fn').style = "border: 1px solid red;box-shadow: red 0px 0px 4px;";
-			document.getElementById('fn').onchange = function() {
-				document.getElementById('fn').style = "";
-				document.getElementById('fn').onchange = null;
-			};
-		}
-		else {
-			var getting = browser.windows.getCurrent();
-			getting.then((windowInfo) => {
-				var sending = browser.runtime.sendMessage({
-					get: "saveas",
-					url: url,
-					fileName: fn,
-					filePath: fp,
-					header: head.split(","),
-					wid: windowInfo.id,
-					incognito: windowInfo.incognito,
-				});
-				sending.then(handleResponse, handleError);
-			}, (e) => console.log(e));
-			saveWinLoc();
-		}
-	});
+// Download with Aria2
+async function download() {
+  if (!(await validateFileName())) return;
+
+  const data = getFormData();
+  const sending = browser.runtime.sendMessage({
+    get: "download",
+    url: data.url,
+    fileName: data.fileName,
+    filePath: data.filePath,
+    header: data.header,
+    server: data.server,
+  });
+  sending.then(handleResponse, handleError);
+  saveWinLoc();
 }
 
-function adv() {
-	if (advl == false) {
-		var getting = browser.windows.getCurrent();
-		getting.then((windowInfo) => {
-			var updating = browser.windows.update(windowInfo.id, {
-				height: windowInfo.height + 95,
-			});
-		});
-		document.querySelector(".head").style = "display:block";
-		document.querySelector(".s1").style = "display:block";
-		advl = true;
-	}
-	else {
-		var getting = browser.windows.getCurrent();
-		getting.then((windowInfo) => {
-			var updating = browser.windows.update(windowInfo.id, {
-				height: windowInfo.height - 95,
-			});
-		});
-		document.querySelector(".head").style = "display:none";
-		document.querySelector(".s1").style = "display:none";
-		advl = false;
-	}
+// Save with browser
+async function save() {
+  if (!(await validateFileName())) return;
+
+  const data = getFormData();
+  const windowInfo = await browser.windows.getCurrent();
+
+  const sending = browser.runtime.sendMessage({
+    get: "save",
+    url: data.url,
+    fileName: data.fileName,
+    filePath: data.filePath,
+    header: data.header,
+    incognito: windowInfo.incognito,
+  });
+  sending.then(handleResponse, handleError);
+  saveWinLoc();
 }
 
+// Save As with browser
+async function saveAs() {
+  if (!(await validateFileName())) return;
+
+  const data = getFormData();
+  const windowInfo = await browser.windows.getCurrent();
+
+  const sending = browser.runtime.sendMessage({
+    get: "saveas",
+    url: data.url,
+    fileName: data.fileName,
+    filePath: data.filePath,
+    header: data.header,
+    wid: windowInfo.id,
+    incognito: windowInfo.incognito,
+  });
+  sending.then(handleResponse, handleError);
+  saveWinLoc();
+}
+
+// Toggle advanced section
+function toggleAdvanced() {
+  isAdvancedExpanded = !isAdvancedExpanded;
+  elements.advancedSection.classList.toggle("show", isAdvancedExpanded);
+  elements.toggleAdvanced.classList.toggle("expanded", isAdvancedExpanded);
+
+  // Adjust window height
+  browser.windows.getCurrent().then((windowInfo) => {
+    const heightDelta = isAdvancedExpanded ? 120 : -120;
+    browser.windows.update(windowInfo.id, {
+      height: windowInfo.height + heightDelta,
+    });
+  });
+}
+
+// Decode filename with charset detection
 function decodeFn(fn) {
-	var res = jschardet.detect(fn).encoding;
-	if (res != "ascii") {
-		var decoder = new TextDecoder(res);
-		var charcode = [];
-		for(var i = 0, length = fn.length; i < length; i++) {
-			var code = fn.charCodeAt(i);
-			charcode.push(code);
-		}
-		var charcodeUint = new Uint8Array();
-		charcodeUint = Uint8Array.from(charcode);
-		var out = decoder.decode(charcodeUint);
-	}
-	else {
-		var out = fn;
-	}
-	return out;
+  const detected = jschardet.detect(fn);
+  if (detected.encoding && detected.encoding.toLowerCase() !== "ascii") {
+    try {
+      const decoder = new TextDecoder(detected.encoding);
+      const charCodes = [];
+      for (let i = 0; i < fn.length; i++) {
+        charCodes.push(fn.charCodeAt(i));
+      }
+      return decoder.decode(new Uint8Array(charCodes));
+    } catch (e) {
+      console.error("Decode error:", e);
+      return fn;
+    }
+  }
+  return fn;
 }
 
-document.addEventListener('DOMContentLoaded', init);
+// Apply i18n translations
+function applyI18n() {
+  document.querySelectorAll("[data-message]").forEach((el) => {
+    const key = el.dataset.message;
+    const message = browser.i18n.getMessage(key);
+    if (message) {
+      if (el.tagName === "OPTION") {
+        el.textContent = message;
+      } else {
+        el.textContent = message;
+      }
+    }
+  });
+
+  const direction = browser.i18n.getMessage("direction");
+  if (direction) {
+    document.body.style.direction = direction;
+  }
+}
+
+// Initialize
+function init() {
+  // Request download info from background
+  browser.runtime.sendMessage({ get: "all" }).then(handleResponse, handleError);
+
+  // Apply zoom
+  browser.storage.local.get(config.command.guess, (item) => {
+    if (item.zoom && item.zoom !== 1) {
+      document.documentElement.style.transformOrigin = "left top";
+      document.documentElement.style.transform = `scale(${item.zoom})`;
+    }
+  });
+
+  // Apply translations
+  applyI18n();
+
+  // Event listeners
+  elements.btnDownload.addEventListener("click", download);
+  elements.btnSave.addEventListener("click", save);
+  elements.btnSaveAs.addEventListener("click", saveAs);
+  elements.toggleAdvanced.addEventListener("click", toggleAdvanced);
+
+  // Keyboard shortcuts
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      download();
+    } else if (e.key === "Escape") {
+      browser.windows.getCurrent().then((windowInfo) => {
+        browser.windows.remove(windowInfo.id);
+      });
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", init);
