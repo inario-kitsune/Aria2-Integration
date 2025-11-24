@@ -62,40 +62,55 @@ async function initAria2() {
   try {
     const item = await browser.storage.local.get(config.command.guess);
 
+    console.log("Aria2 config:", item);
+
     if (!item.host) {
       updateStatus(false);
       return;
     }
 
-    const secure =
-      item.protocol?.toLowerCase() === "https" ||
-      item.protocol?.toLowerCase() === "wss";
+    const protocol = (item.protocol || "http").toLowerCase();
+    const secure = protocol === "https" || protocol === "wss";
+    const isWebSocket = protocol === "ws" || protocol === "wss";
 
     const options = {
       host: item.host,
-      port: item.port,
+      port: item.port || "6800",
       secure: secure,
-      secret: item.token,
-      path: "/" + item.interf,
+      secret: item.token || "",
+      path: "/" + (item.interf || "jsonrpc"),
     };
+
+    console.log("Aria2 options:", options);
 
     aria2 = new Aria2(options);
 
-    // Check connection and get version
-    const isWebSocket =
-      item.protocol?.toLowerCase() === "ws" ||
-      item.protocol?.toLowerCase() === "wss";
-
+    // For WebSocket, we need to open connection first
     if (isWebSocket) {
-      await aria2.open();
+      try {
+        await aria2.open();
+      } catch (wsErr) {
+        console.error("WebSocket connection failed:", wsErr);
+        updateStatus(false);
+        return;
+      }
     }
 
-    const versionInfo = await aria2.getVersion();
-    updateStatus(true, versionInfo.version);
+    // Get version to verify connection
+    aria2.getVersion().then(
+      function (versionInfo) {
+        console.log("Aria2 version:", versionInfo);
+        updateStatus(true, versionInfo.version);
 
-    // Start refreshing stats
-    refreshStats();
-    refreshInterval = setInterval(refreshStats, 1000);
+        // Start refreshing stats
+        refreshStats();
+        refreshInterval = setInterval(refreshStats, 1000);
+      },
+      function (err) {
+        console.error("getVersion failed:", err);
+        updateStatus(false);
+      },
+    );
   } catch (err) {
     console.error("Aria2 connection failed:", err);
     updateStatus(false);
@@ -103,20 +118,22 @@ async function initAria2() {
 }
 
 // Refresh global stats
-async function refreshStats() {
+function refreshStats() {
   if (!aria2) return;
 
-  try {
-    const stats = await aria2.getGlobalStat();
-    updateStats(stats);
-  } catch (err) {
-    console.error("Failed to get stats:", err);
-    updateStatus(false);
-    if (refreshInterval) {
-      clearInterval(refreshInterval);
-      refreshInterval = null;
-    }
-  }
+  aria2.getGlobalStat().then(
+    function (stats) {
+      updateStats(stats);
+    },
+    function (err) {
+      console.error("Failed to get stats:", err);
+      updateStatus(false);
+      if (refreshInterval) {
+        clearInterval(refreshInterval);
+        refreshInterval = null;
+      }
+    },
+  );
 }
 
 // Toggle extension enabled state
@@ -147,13 +164,13 @@ function openAriaNg() {
       if (item.autoSet) {
         ariangUrl += "#!/settings/rpc/set/";
         ariangUrl +=
-          item.protocol +
+          (item.protocol || "http") +
           "/" +
           item.host +
           "/" +
           item.port +
           "/" +
-          item.interf +
+          (item.interf || "jsonrpc") +
           "/" +
           btoa(item.token || "");
       }
