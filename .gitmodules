@@ -1,0 +1,3 @@
+[submodule "App/data/ariang"]
+	path = App/data/ariang
+	url = https://github.com/mayswind/AriaNg-DailyBuild.git
