@@ -1,77 +1,142 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<title>Options Page</title>
-	<style type="text/css">
-	       body {
-	         font-family: "sans-serif;
-	         font-size: 16px;
-	         background: #f9f9fa;
-			 width: 1000px;
-	       }
-	       p {
-	         margin: 3px;
-	       }
-		   .tab {
-	         margin-left: 30px;
-	       }
-	</style>
-</head>
-<body>
-	<div>
-	<h3>Aria2 Connection Status</h3>
-	<p>Default Server: <i id="server1">...</i></p>
-	<p>Server 2: <i id="server2">...</i></p>
-	<p>Server 3: <i id="server3">...</i></p>
-	</div>
-	<br>
-	<hr>
-	<div>
-		<p>Author: Ross Wang</p>
-		<br>
-		<div class="tab">
-			<!--i>
-				I've dropped Firefox since 57 was released. So now I have no incentive to maintain this add-on. 
-				The frequency of updates will decrease. 
-				 I hope Mozilla can launch a good browser as before, and hope you can give me some stars or contribute some code.
-			</i-->
-		</div>
-		<br>
-		<br>
-		<p data-message="translator">Translator: %Name%</p>
-		<br>
-		<div class="tab">
-			<i data-message="translatorMessage">%message%</i>
-		</div>
-		<br>
-		<hr>
-		<p data-message="about_M1">What is Aria2?</p>
-		<div class="tab">
-			<a href="https://aria2.github.io/" target="_blank">https://aria2.github.io/</a>
-		</div>
-		<p data-message="about_M2">This add-on uses Mayswind's AriaNg.</p>
-		<div class="tab">
-			<a href="https://github.com/mayswind/AriaNg" target="_blank">https://github.com/mayswind/AriaNg</a>
-		</div>
-		<br>
-		<a data-message="about_L1" href="https://addons.mozilla.org/firefox/addon/aria2-integration/" target="_blank">Add-on home page</a>
-		|
-		<a data-message="about_L2" href="https://github.com/RossWang/Aria2-Integration/tree/master/Bin" target="_blank">Aria2 Settings Samples</a>
-		|
-		<a data-message="about_L3" href="https://github.com/RossWang/Aria2-Integration/issues" target="_blank">Submit a Bug or Feedback</a>
-		|
-		<a data-message="about_L4" href="https://github.com/RossWang/Aria2-Integration/blob/master/CHANGELOG.md" target="_blank">Release Notes</a>
-		|
-		<a data-message="about_L5" href="https://github.com/RossWang/Aria2-Integration/tree/master/App/_locales" target="_blank">Help Translate</a>
-		|
-		<a href="https://github.com/RossWang/Aria2-Integration/blob/master/THIRDPARTY.md" target="_blank">Third Party</a>
-	</div>
-	
-	<script src="/config.js"></script>
-	<script src="/lib/polygoat.js"></script>
-	<script src="/lib/aria.js"></script>
-	<script src="about.js"></script>
+    <head>
+        <meta charset="utf-8" />
+        <title>About</title>
+        <link rel="stylesheet" href="shared.css" />
+        <style>
+            .about-header {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                margin-bottom: 20px;
+            }
 
-</body>
+            .about-logo {
+                width: 64px;
+                height: 64px;
+            }
+
+            .about-info h2 {
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 4px;
+            }
+
+            .about-info p {
+                color: var(--text-secondary);
+                font-size: 13px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="page">
+            <!-- About Header -->
+            <div class="section">
+                <div class="about-header">
+                    <img
+                        class="about-logo"
+                        src="../icons/64.png"
+                        alt="Aria2 Integration"
+                    />
+                    <div class="about-info">
+                        <h2>Aria2 Download Manager Integration</h2>
+                        <p>Version 0.4.5</p>
+                    </div>
+                </div>
+
+                <p style="color: var(--text-secondary); font-size: 13px">
+                    <span data-message="about_M1">What is Aria2?</span>
+                    <a
+                        href="https://aria2.github.io/"
+                        target="_blank"
+                        style="color: var(--accent); margin-left: 4px"
+                        >aria2.github.io</a
+                    >
+                </p>
+                <p
+                    style="
+                        color: var(--text-secondary);
+                        font-size: 13px;
+                        margin-top: 8px;
+                    "
+                    data-message="about_M2"
+                >
+                    This add-on uses Mayswind's AriaNg.
+                </p>
+            </div>
+
+            <!-- Connection Status -->
+            <div class="section">
+                <div class="section-title">Aria2 Status</div>
+                <div class="status-indicator">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span class="status-text" id="statusText">Checking...</span>
+                    <span class="status-version" id="statusVersion"></span>
+                </div>
+            </div>
+
+            <!-- Links -->
+            <div class="section">
+                <div class="section-title">Links</div>
+                <ul class="links-list">
+                    <li>
+                        <a
+                            href="https://addons.mozilla.org/firefox/addon/aria2-integration"
+                            target="_blank"
+                            data-message="about_L1"
+                            >Add-on home page</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="https://github.com/RossWang/Aria2-Integration/tree/master/Bin"
+                            target="_blank"
+                            data-message="about_L2"
+                            >Aria2 Settings Samples</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="https://github.com/RossWang/Aria2-Integration/issues"
+                            target="_blank"
+                            data-message="about_L3"
+                            >Submit a Bug or Feedback</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="https://github.com/RossWang/Aria2-Integration/blob/master/CHANGELOG.md"
+                            target="_blank"
+                            data-message="about_L4"
+                            >Release Notes</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="https://github.com/AJclemens/Aria2-Integration/tree/master/App/_locales"
+                            target="_blank"
+                            data-message="about_L5"
+                            >Help Translate</a
+                        >
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Translator -->
+            <div class="section" id="translatorSection" style="display: none">
+                <div class="section-title" data-message="translator">
+                    Translator
+                </div>
+                <p
+                    id="translatorMessage"
+                    style="color: var(--text-secondary); font-size: 13px"
+                ></p>
+            </div>
+        </div>
+
+        <script src="/config.js"></script>
+        <script src="/lib/aria.js"></script>
+        <script src="about.js"></script>
+    </body>
 </html>

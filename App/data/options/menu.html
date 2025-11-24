@@ -1,266 +1,308 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="Shortcut Icon" type="image/x-icon" href="../icons/32.png" />
+        <title data-message="OP_title">Aria2 Integration Options</title>
+        <style>
+            :root {
+                --bg-primary: #ffffff;
+                --bg-secondary: #f5f5f7;
+                --bg-tertiary: #e8e8ed;
+                --text-primary: #1d1d1f;
+                --text-secondary: #86868b;
+                --accent: #0071e3;
+                --accent-hover: #0077ed;
+                --border: #d2d2d7;
+                --shadow: rgba(0, 0, 0, 0.08);
+                --sidebar-width: 240px;
+            }
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="Shortcut Icon" type="image/x-icon" href="../icons/32.png">
-  <title data-message="OP_title" >Aria2 Integration Options</title>
-  <style>
-    #cssmenu,
-    #cssmenu ul,
-    #cssmenu ul li,
-    #cssmenu ul ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      border: 0;
-    }
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --bg-primary: #1c1c1e;
+                    --bg-secondary: #2c2c2e;
+                    --bg-tertiary: #3a3a3c;
+                    --text-primary: #f5f5f7;
+                    --text-secondary: #98989d;
+                    --accent: #0a84ff;
+                    --accent-hover: #409cff;
+                    --border: #38383a;
+                    --shadow: rgba(0, 0, 0, 0.3);
+                }
+            }
 
-    #cssmenu ul {
-      position: relative;
-      z-index: 597;
-      float: left;
-    }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-    #cssmenu ul li {
-      float: left;
-      min-height: 1px;
-      line-height: 1em;
-      vertical-align: middle;
-    }
+            html,
+            body {
+                height: 100%;
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    Helvetica, Arial, sans-serif;
+                font-size: 14px;
+                background: var(--bg-secondary);
+                color: var(--text-primary);
+            }
 
-    #cssmenu ul li.hover,
-    #cssmenu ul li:hover {
-      position: relative;
-      z-index: 599;
-      cursor: default;
-    }
+            .container {
+                display: flex;
+                height: 100vh;
+            }
 
-    #cssmenu ul ul {
-      margin-top: 1px;
-      visibility: hidden;
-      position: absolute;
-      top: 1px;
-      left: 99%;
-      z-index: 598;
-      width: 100%;
-    }
+            /* Sidebar */
+            .sidebar {
+                width: var(--sidebar-width);
+                background: var(--bg-primary);
+                border-right: 1px solid var(--border);
+                display: flex;
+                flex-direction: column;
+                flex-shrink: 0;
+            }
 
-    #cssmenu ul ul li {
-      float: none;
-    }
+            .sidebar-header {
+                padding: 20px;
+                border-bottom: 1px solid var(--border);
+            }
 
-    #cssmenu ul ul ul {
-      top: 1px;
-      left: 99%;
-    }
+            .sidebar-logo {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
 
-    #cssmenu ul li:hover>ul {
-      visibility: visible;
-    }
+            .sidebar-logo img {
+                width: 28px;
+                height: 28px;
+            }
 
-    #cssmenu ul li {
-      float: none;
-    }
+            .sidebar-logo span {
+                font-size: 16px;
+                font-weight: 600;
+            }
 
-    #cssmenu ul ul li {
-      font-weight: normal;
-    }
+            .sidebar-nav {
+                flex: 1;
+                padding: 12px;
+                overflow-y: auto;
+            }
 
-    /* Custom CSS Styles */
+            .nav-item {
+                display: block;
+                padding: 10px 14px;
+                margin-bottom: 4px;
+                border-radius: 8px;
+                color: var(--text-primary);
+                text-decoration: none;
+                transition: all 0.15s ease;
+                cursor: pointer;
+            }
 
-    #cssmenu {
-      font-size: 18px;
-      width: 200px;
-    }
+            .nav-item:hover {
+                background: var(--bg-secondary);
+            }
 
-    #cssmenu ul a,
-    #cssmenu ul a:link,
-    #cssmenu ul a:visited {
-      display: block;
-      color: #848889;
-      text-decoration: none;
-      font-weight: 300;
-    }
+            .nav-item.active {
+                background: var(--accent);
+                color: white;
+            }
 
-    #cssmenu>ul {
-      float: none;
-    }
+            .nav-group {
+                margin-bottom: 8px;
+            }
 
-    #cssmenu ul {
-      background: #fff;
-    }
+            .nav-group-title {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 14px;
+                margin-bottom: 4px;
+                border-radius: 8px;
+                color: var(--text-primary);
+                cursor: pointer;
+                transition: all 0.15s ease;
+            }
 
-    #cssmenu>ul>li {
-      border-left: 3px solid #d7d8da;
-    }
+            .nav-group-title:hover {
+                background: var(--bg-secondary);
+            }
 
-    #cssmenu>ul>li>a {
-      padding: 10px 20px;
-    }
+            .nav-group-title.active {
+                background: var(--accent);
+                color: white;
+            }
 
-    #cssmenu>ul>li:hover {
-      border-left: 3px solid rgb(44, 173, 255);
-    }
+            .nav-group-title svg {
+                width: 16px;
+                height: 16px;
+                transition: transform 0.2s ease;
+            }
 
-    #cssmenu>ul>.active {
-      border-left: 3px solid rgb(44, 173, 255);
-    }
+            .nav-group.expanded .nav-group-title svg {
+                transform: rotate(90deg);
+            }
 
-    #cssmenu ul li:hover>a {
-      color: rgb(44, 173, 255);
-    }
+            .nav-group-items {
+                display: none;
+                padding-left: 12px;
+            }
 
-    #cssmenu ul .active>a {
-      color: rgb(44, 173, 255);
-    }
+            .nav-group.expanded .nav-group-items {
+                display: block;
+            }
 
-    #cssmenu>ul>li:hover {
-      background: #f6f6f6;
-    }
+            .nav-subitem {
+                display: block;
+                padding: 8px 14px;
+                margin-bottom: 2px;
+                border-radius: 6px;
+                color: var(--text-secondary);
+                text-decoration: none;
+                font-size: 13px;
+                transition: all 0.15s ease;
+                cursor: pointer;
+            }
 
-    /* Sub Menu */
+            .nav-subitem:hover {
+                background: var(--bg-secondary);
+                color: var(--text-primary);
+            }
 
-    #cssmenu ul ul a:link,
-    #cssmenu ul ul a:visited {
-      font-weight: 400;
-      font-size: 14px;
-    }
+            .nav-subitem.active {
+                background: var(--bg-tertiary);
+                color: var(--accent);
+                font-weight: 500;
+            }
 
-    #cssmenu ul ul {
-      width: 180px;
-      background: none;
-      border-left: 20px solid transparent;
-    }
+            /* Main Content */
+            .main {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                min-width: 0;
+            }
 
-    #cssmenu ul ul a {
-      padding: 8px 0;
-      border-bottom: 1px solid #eeeeee;
-    }
+            .main-header {
+                padding: 20px 24px;
+                background: var(--bg-primary);
+                border-bottom: 1px solid var(--border);
+            }
 
-    #cssmenu ul ul li {
-      padding: 0 20px;
-      background: #fff;
-    }
+            .main-header h1 {
+                font-size: 20px;
+                font-weight: 600;
+            }
 
-    #cssmenu ul ul li:last-child {
-      border-bottom: 3px solid #d7d8da;
-      padding-bottom: 10px;
-    }
+            .main-content {
+                flex: 1;
+                overflow: hidden;
+            }
 
-    #cssmenu ul ul li:first-child {
-      padding-top: 10px;
-    }
+            .main-content iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+                background: var(--bg-secondary);
+            }
 
-    #cssmenu ul ul li:last-child>a {
-      border-bottom: none;
-    }
+            /* Version Badge */
+            .version-badge {
+                margin-top: auto;
+                padding: 12px 20px;
+                border-top: 1px solid var(--border);
+                font-size: 11px;
+                color: var(--text-secondary);
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo">
+                        <img src="../icons/32.png" alt="Logo" />
+                        <span>Aria2</span>
+                    </div>
+                </div>
 
-    #cssmenu ul ul li:first-child:after {
-      content: '';
-      display: block;
-      width: 0;
-      height: 0;
-      position: absolute;
-      left: -20px;
-      top: 13px;
-      border-left: 10px solid transparent;
-      border-right: 10px solid #fff;
-      border-bottom: 10px solid transparent;
-      border-top: 10px solid transparent;
-    }
+                <nav class="sidebar-nav">
+                    <a
+                        class="nav-item active"
+                        data-page="general"
+                        data-message="OP_general"
+                        >General</a
+                    >
 
-    h1 {
-      padding: 0 0 13px 0;
-    }
+                    <div class="nav-group expanded">
+                        <div
+                            class="nav-group-title"
+                            data-message="OP_rpcServer"
+                        >
+                            RPC Servers
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"
+                                />
+                            </svg>
+                        </div>
+                        <div class="nav-group-items">
+                            <a
+                                class="nav-subitem"
+                                data-page="rpc"
+                                data-message="OP_rpcDefault"
+                                >Default Server</a
+                            >
+                            <a
+                                class="nav-subitem"
+                                data-page="rpc2"
+                                data-message="OP_rpc2"
+                                >RPC Server 2</a
+                            >
+                            <a
+                                class="nav-subitem"
+                                data-page="rpc3"
+                                data-message="OP_rpc3"
+                                >RPC Server 3</a
+                            >
+                        </div>
+                    </div>
 
-    h1::after {
-      background-color: #eee;
-      content: ' ';
-      display: block;
-      height: 1px;
-      position: relative;
-      top: 13px;
-    }
+                    <a
+                        class="nav-item"
+                        data-page="exception"
+                        data-message="OP_exception"
+                        >Exceptions</a
+                    >
+                    <a
+                        class="nav-item"
+                        data-page="about"
+                        data-message="OP_about"
+                        >About</a
+                    >
+                </nav>
 
-    #cssmenu::before {
-      background-color: #eee;
-      content: ' ';
-      display: block;
-      width: 1px;
-      height: 500px;
-      position: absolute;
-      top: 0px;
-      left: 220px;
-    }
+                <div class="version-badge">v0.4.5</div>
+            </aside>
 
-    body {
-      padding: 21px;
-      background: #f9f9fa;
-      overflow: hidden;
-    }
+            <!-- Main Content -->
+            <main class="main">
+                <header class="main-header">
+                    <h1 id="pageTitle" data-message="OP_general">General</h1>
+                </header>
+                <div class="main-content">
+                    <iframe id="contentFrame" src="general.html"></iframe>
+                </div>
+            </main>
+        </div>
 
-    .wrapper {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-
-    .left {
-      float: left;
-      height: 100%;
-    }
-
-    .right {
-      float: right;
-      margin: 0px;
-      padding: 0px;
-      width: calc(100% - 250px);
-      height: calc(100vh - 200px);
-    }
-  </style>
-</head>
-
-<body>
-  <h1 data-message="OP_title" id="head">Aria2 Integration Options</h1>
-  <div class="wrapper">
-    <div class="left">
-      <div id="cssmenu">
-        <ul>
-          <li id="general" class="active">
-            <a data-message="OP_general" href="#general">General</a>
-          </li>
-          <li id="rpc">
-            <a data-message="OP_rpcServer" href="#">RPC Servers</a>
-            <ul>
-              <li>
-                <a data-message="OP_rpcDefault" href="#rpc">Default Server</a>
-              </li>
-              <li>
-                <a data-message="OP_rpc2" href="#rpc2">RPC Server 2</a>
-              </li>
-              <li>
-                <a data-message="OP_rpc3" href="#rpc3">RPC Server 3</a>
-              </li>
-            </ul>
-          </li>
-          <li id="exception">
-            <a data-message="OP_exception" href="#exception">Exceptions</a>
-          </li>
-          <li id="about">
-            <a data-message="OP_about" href="#about">About</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="right">
-      <iframe class="iframe" style="width: 100%; height: 100%" src="general.html" frameborder="0"></iframe>
-    </div>
-  </div>
-  <script src="/config.js"></script>
-  <script src="menu.js"></script>
-
-</body>
-
+        <script src="/config.js"></script>
+        <script src="menu.js"></script>
+    </body>
 </html>

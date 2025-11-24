@@ -1,197 +1,299 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+    <head>
+        <meta charset="utf-8" />
+        <title>General Settings</title>
+        <link rel="stylesheet" href="shared.css" />
+    </head>
+    <body>
+        <div class="page">
+            <!-- Display Settings -->
+            <div class="section">
+                <div class="section-title">Display</div>
 
-<head>
-	<meta charset="utf-8">
-	<title>Options Page</title>
-</head>
+                <div class="form-group">
+                    <label class="form-label" data-message="OP_zoom"
+                        >Zoom Level</label
+                    >
+                    <input
+                        type="text"
+                        id="zoom"
+                        class="form-input"
+                        placeholder="1"
+                    />
+                    <p class="form-hint" data-message="OPN_zoom">
+                        Zoom Level of Download Panel. Default value is 1.
+                    </p>
+                </div>
 
-<body>
-	<style type="text/css">
-		body {
-			font-family: sans-serif;
-			font-size: 16px;
-			background: #f9f9fa;
-		}
+                <div class="form-group">
+                    <label class="form-label" data-message="OP_winWidth"
+                        >Download Panel width offset</label
+                    >
+                    <div class="form-range-group">
+                        <input
+                            type="range"
+                            id="dpWidth"
+                            class="form-range"
+                            min="-5000"
+                            max="5000"
+                            value="0"
+                        />
+                        <input
+                            type="number"
+                            id="dpWidthN"
+                            class="form-range-value"
+                            value="0"
+                            min="-5000"
+                            max="5000"
+                        />
+                    </div>
+                    <p class="form-hint" data-message="OPN_winWidth">
+                        Fine Tune Download Window width
+                    </p>
+                </div>
 
-		p {
-			margin: 3px;
-		}
+                <div class="form-group">
+                    <label class="form-label" data-message="OP_winHeight"
+                        >Download Panel height offset</label
+                    >
+                    <div class="form-range-group">
+                        <input
+                            type="range"
+                            id="dpHeight"
+                            class="form-range"
+                            min="-5000"
+                            max="5000"
+                            value="0"
+                        />
+                        <input
+                            type="number"
+                            id="dpHeightN"
+                            class="form-range-value"
+                            value="0"
+                            min="-5000"
+                            max="5000"
+                        />
+                    </div>
+                    <p class="form-hint" data-message="OPN_winHeight">
+                        Fine Tune Download Window height
+                    </p>
+                </div>
+            </div>
 
-		table {
-			width: 100%;
-			padding-right: 20px;
-		}
+            <!-- Behavior Settings -->
+            <div class="section">
+                <div class="section-title">Behavior</div>
 
-		.note {
-			font-size: 80%;
-			color: rgb(127, 127, 127);
-		}
+                <div class="form-checkbox">
+                    <input type="checkbox" id="cm" />
+                    <div class="form-checkbox-content">
+                        <label
+                            class="form-checkbox-label"
+                            for="cm"
+                            data-message="OP_contextMenu"
+                            >Add Context Menus</label
+                        >
+                        <p
+                            class="form-checkbox-hint"
+                            data-message="OPN_contextMenu"
+                        >
+                            Add Context Menus to links, videos and audios
+                        </p>
+                    </div>
+                </div>
 
-		.highlight {
-			font-size: 80%;
-			border: solid 2px #D22222;
-		}
+                <div class="form-checkbox">
+                    <input type="checkbox" id="ua" />
+                    <div class="form-checkbox-content">
+                        <label
+                            class="form-checkbox-label"
+                            for="ua"
+                            data-message="OP_ua"
+                            >Send User-Agent To Aria2</label
+                        >
+                        <p class="form-checkbox-hint" data-message="OPN_ua">
+                            User-Agent will be same as the browser send
+                        </p>
+                    </div>
+                </div>
 
-		#save {
-			position: relative;
-			width: 80px;
-			height: 30px;
-			margin-top: 30px;
-			font-size: 18px;
-			text-align: center;
-			background-image: none;
-			background-color: rgb(44, 173, 255);
-			border-style: none;
-			border-radius: 2px;
-			text-shadow: rgb(0, 64, 91) 0px 0px 0.5px;
-			color: rgb(255, 255, 255);
-		}
+                <div class="form-checkbox">
+                    <input type="checkbox" id="shut" />
+                    <div class="form-checkbox-content">
+                        <label
+                            class="form-checkbox-label"
+                            for="shut"
+                            data-message="OP_shutdown"
+                            >Shutdown Aria2c when the browser closed</label
+                        >
+                        <p
+                            class="form-checkbox-hint"
+                            data-message="OPN_shutdown"
+                        >
+                            Send "--stop-with-process=&lt;PID&gt;" command to
+                            aria2c
+                        </p>
+                    </div>
+                </div>
 
-		.slider {
-			width: 85%;
-			opacity: 1;
+                <div class="form-checkbox">
+                    <input type="checkbox" id="aggre" />
+                    <div class="form-checkbox-content">
+                        <label
+                            class="form-checkbox-label"
+                            for="aggre"
+                            data-message="OP_aggressive"
+                            >Aggressive Mode</label
+                        >
+                        <p
+                            class="form-checkbox-hint"
+                            data-message="OPN_aggressive"
+                        >
+                            Detect download links aggressively. May cause some
+                            problems.
+                        </p>
+                    </div>
+                </div>
 
-		}
-	</style>
-	<table>
-		<tr>
-			<td><Label data-message="OP_zoom">Zoom Level:</Label>
-				<input id="zoom" style="width: 300px; margin-top: 5px;" type="text">
-			</td>
-		</tr>
-		<tr>
-			<td data-message="OPN_zoom" class="note">Zoom Level of Download Panel. Default value is 1.</td>
-		</tr>
-		<tr>
-			<td>
-				<input id="cm" style="margin-left: 0px; margin-top: 15px;" type="checkbox">
-				<label data-message="OP_contextMenu" for="cm">Add Context Menus</label>
-			</td>
-		</tr>
-		<tr>
-			<td data-message="OPN_contextMenu" class="note">Add Context Menus to links, videos and audios </td>
-		</tr>
-		<tr>
-			<td>
-				<input id="ua" style="margin-left: 0px; margin-top: 15px;" type="checkbox">
-				<label data-message="OP_ua" for="ua">Send User-Agent To Aria2</label>
-			</td>
-		</tr>
-		<tr>
-			<td data-message="OPN_ua" class="note">User-Agent will be same as the browser send</td>
-		</tr>
-		<tr>
-			<td>
-				<input id="shut" style="margin-left: 0px; margin-top: 15px;" type="checkbox">
-				<label data-message="OP_shutdown" for="shut">Shutdown Aria2c when the browser closed</label>
-			</td>
-		</tr>
-		<tr>
-			<td data-message="OPN_shutdown" class="note">Send "--stop-with-process=
-				<PID>" command to aria2c</td>
-		</tr>
-		<tr>
-			<td>
-				<input id="aggre" style="margin-left: 0px; margin-top: 15px;" type="checkbox">
-				<label data-message="OP_aggressive" for="aggre">Aggressive Mode</label>
-			</td>
-		</tr>
-		<tr>
-			<td data-message="OPN_aggressive" class="note">Detect download links aggressively. May cause some problems.</td>
-		</tr>
-		<tr>
-			<td>
-				<input id="winLoc" style="margin-left: 0px; margin-top: 15px;" type="checkbox">
-				<label data-message="OP_winLoc" for="winLoc">Remember window location</label>
-			</td>
-		</tr>
-		<tr>
-			<td data-message="OPN_winLoc" class="note">The location of Download Panel will be saved (but firefox has bug to create window)</td>
-		</tr>
-		<tr>
-			<td>
-				<input id="auto" style="margin-left: 0px; margin-top: 15px;" type="checkbox">
-				<label data-message="OP_auto" for="auto">Aria2 Auto Start</label>
-			</td>
-		</tr>
-		<tr>
-			<td data-message="OPN_auto" class="note">Start Aria2 automatically when the download start</td>
-		</tr>
-		<tr>
-			<td>
-				<input id="autoSet" style="margin-left: 0px; margin-top: 15px;" type="checkbox">
-				<label data-message="OP_autoSet" for="autoSet">AriaNg Auto Set</label>
-			</td>
-		</tr>
-		<tr>
-			<td data-message="OPN_autoSet" class="note">Set AriaNg automatically when the user click "details"</td>
-		</tr>
-		<tr>
-			<td>
-				<input id="chgLog" style="margin-left: 0px; margin-top: 15px;" type="checkbox">
-				<label data-message="OP_chgLog" for="chgLog">Display Changelog</label>
-			</td>
-		</tr>
-		<tr>
-			<td data-message="OPN_chgLog" class="note">Display Changelog After Update</td>
-		</tr>
-		<tr>
-			<td>
-				<input id="badge" style="margin-left: 0px; margin-top: 15px;" type="checkbox">
-				<label data-message="OP_badge" for="badge">Display Current Active Download Count</label>
-			</td>
-		</tr>
-		<tr>
-			<td data-message="OPN_badge" class="note">Display current active download count on top of the icon</td>
-		</tr>
-		<tr>
-			<td>
-				<input id="downPanel" style="margin-left: 0px; margin-top: 15px;" type="checkbox">
-				<label data-message="OP_downPanel" for="downPanel">Display Download Panel</label>
-			</td>
-		</tr>
-		<tr>
-			<td data-message="OPN_downPanel" class="note">Whether to display a download panel for the download event trigger from the auto observer</td>
-		</tr>
-		<tr>
-			<td>
-				<input id="cmDownPanel" style="margin-left: 0px; margin-top: 15px;" type="checkbox">
-				<label data-message="OP_cmDownPanel" for="cmDownPanel">Display Download Panel (context menu)</label>
-			</td>
-		</tr>
-		<tr>
-			<td data-message="OPN_cmDownPanel" class="note">Whether to display a download panel for the download event trigger from the context menu</td>
-		</tr>
-		<tr><td><br></td></tr>
-		<tr>
-			<td>
-				<label data-message="OP_winWidth" for="winLoc">Download Panel width offset</label>
-				<input style="width: 500px;" type="range" min="-5000" max="5000" value="0" class="slider" id="dpWidth">
-				<input id="dpWidthN" style="width: 5em;" value="0" min="-5000" max="5000" type="number" required>
-			</td>
-		</tr>
-		<tr>
-			<td data-message="OPN_winWidth" class="note">Fine Tune Download Window width</td>
-		</tr>
-		<tr><td><br></td></tr>
-		<tr>
-			<td>
-				<label data-message="OP_winHeight" for="winLoc">Download Panel height offset</label>
-				<input style="width: 500px;" type="range" min="-5000" max="5000" value="0" class="slider" id="dpHeight">
-				<input id="dpHeightN" style="width: 5em;" value="0" min="-5000" max="5000" type="number" required>
-			</td>
-		</tr>
-		<tr>
-			<td data-message="OPN_winHeight" class="note">Fine Tune Download Window height</td>
-		</tr>
-	</table>
-	<div align="right">
-		<span id="status"></span>
-		<button data-message="OP_save" id="save">Save</button>
-	</div>
-	<script src="/config.js"></script>
-	<script src="general.js"></script>
-</body>
+                <div class="form-checkbox">
+                    <input type="checkbox" id="winLoc" />
+                    <div class="form-checkbox-content">
+                        <label
+                            class="form-checkbox-label"
+                            for="winLoc"
+                            data-message="OP_winLoc"
+                            >Remember window location</label
+                        >
+                        <p class="form-checkbox-hint" data-message="OPN_winLoc">
+                            The location of Download Panel will be saved
+                        </p>
+                    </div>
+                </div>
 
+                <div class="form-checkbox">
+                    <input type="checkbox" id="auto" />
+                    <div class="form-checkbox-content">
+                        <label
+                            class="form-checkbox-label"
+                            for="auto"
+                            data-message="OP_auto"
+                            >Aria2 Auto Start</label
+                        >
+                        <p class="form-checkbox-hint" data-message="OPN_auto">
+                            Start Aria2 automatically when the download start
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-checkbox">
+                    <input type="checkbox" id="autoSet" />
+                    <div class="form-checkbox-content">
+                        <label
+                            class="form-checkbox-label"
+                            for="autoSet"
+                            data-message="OP_autoSet"
+                            >AriaNg Auto Set</label
+                        >
+                        <p
+                            class="form-checkbox-hint"
+                            data-message="OPN_autoSet"
+                        >
+                            Set AriaNg automatically when the user click
+                            "details"
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="section">
+                <div class="section-title">Notifications</div>
+
+                <div class="form-checkbox">
+                    <input type="checkbox" id="chgLog" />
+                    <div class="form-checkbox-content">
+                        <label
+                            class="form-checkbox-label"
+                            for="chgLog"
+                            data-message="OP_chgLog"
+                            >Display Changelog</label
+                        >
+                        <p class="form-checkbox-hint" data-message="OPN_chgLog">
+                            Display Changelog After Update
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-checkbox">
+                    <input type="checkbox" id="badge" />
+                    <div class="form-checkbox-content">
+                        <label
+                            class="form-checkbox-label"
+                            for="badge"
+                            data-message="OP_badge"
+                            >Display Current Active Download Count</label
+                        >
+                        <p class="form-checkbox-hint" data-message="OPN_badge">
+                            Display current active download count on top of the
+                            icon
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-checkbox">
+                    <input type="checkbox" id="downPanel" />
+                    <div class="form-checkbox-content">
+                        <label
+                            class="form-checkbox-label"
+                            for="downPanel"
+                            data-message="OP_downPanel"
+                            >Display Download Panel</label
+                        >
+                        <p
+                            class="form-checkbox-hint"
+                            data-message="OPN_downPanel"
+                        >
+                            Whether to display a download panel for the download
+                            event trigger from the auto observer
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-checkbox">
+                    <input type="checkbox" id="cmDownPanel" />
+                    <div class="form-checkbox-content">
+                        <label
+                            class="form-checkbox-label"
+                            for="cmDownPanel"
+                            data-message="OP_cmDownPanel"
+                            >Display Download Panel (context menu)</label
+                        >
+                        <p
+                            class="form-checkbox-hint"
+                            data-message="OPN_cmDownPanel"
+                        >
+                            Whether to display a download panel for the download
+                            event trigger from the context menu
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+                <span class="form-status" id="status"></span>
+                <button
+                    class="btn btn-primary"
+                    id="save"
+                    data-message="OP_save"
+                >
+                    Save
+                </button>
+            </div>
+        </div>
+
+        <script src="/config.js"></script>
+        <script src="general.js"></script>
+    </body>
 </html>
