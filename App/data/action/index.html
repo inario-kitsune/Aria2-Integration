@@ -1,150 +1,415 @@
-<!DOCTYPE html>
-<html><head><meta name="GCD" content="YTk3ODQ3ZWZhN2I4NzZmMzBkNTEwYjJlf0caed9c61e7bd01c9ddcdb9aae5f3f2"/>
-  <meta charset="utf-8">
-  <title>action</title>
-  <meta name="generator" content="Google Web Designer 1.9.0.0619">
-  <meta name="template" content="Expandable 3.0.0">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <link href="gwdpage_style.css" rel="stylesheet" data-version="8" data-exports-type="gwd-page"> -->
-  <!-- <link href="gwdpagedeck_style.css" rel="stylesheet" data-version="9" data-exports-type="gwd-pagedeck"> -->
-  <style type="text/css" id="gwd-lightbox-style">.gwd-lightbox {
-    overflow: hidden;
-}</style>
-  <style type="text/css" id="gwd-text-style">p {
-    margin: 0px;
-}
-h1 {
-    margin: 0px;
-}
-h2 {
-    margin: 0px;
-}
-h3 {
-    margin: 0px;
-}</style>
-  <style type="text/css">html,
-body {
-    width: 100px;
-    height: 100px;
-    margin: 0px;
-}
-.gwd-page-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-.gwd-page-content {
-    background-color: transparent;
-    transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-    -moz-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-    perspective: 1400px;
-    -webkit-perspective: 1400px;
-    -moz-perspective: 1400px;
-    transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d;
-    -moz-transform-style: preserve-3d;
-    position: absolute;
-}
-.gwd-page-wrapper {
-    background-color: rgb(255, 255, 255);
-    position: absolute;
-    transform: translateZ(0px);
-    -webkit-transform: translateZ(0px);
-    -moz-transform: translateZ(0px);
-}
-.page1-content {
-    width: 550px;
-    height: 400px;
-}
-.gwd-div-qh3n {
-    height: 100px;
-    width: 100px;
-}
-.gwd-div-18na {
-    height: 100px;
-    width: 100px;
-}
-.switch {
-    position: relative;
-    display: inline-block;
-    height: 34px;
-    width: 60px;
-    left: 19px;
-    top: 12px;
-    border-radius: 2px;
-}
-.switch input {
-    display: none;
-}
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    background-color: rgb(204, 204, 204);
-    transition: 0.4s;
-    -webkit-transition: 0.4s;
-    -moz-transition: 0.4s;
-    border-radius: 2px;
-}
-.slider::before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: 0.4s;
-    -webkit-transition: 0.4s;
-    -moz-transition: 0.4s;
-    border-radius: 2px;
-}
-input:checked + .slider {
-    background-color: rgb(33, 150, 243);
-}
-input:focus + .slider {
-    box-shadow: rgb(33, 150, 243) 0px 0px 1px;
-}
-input:checked + .slider::before {
-    transform: translateX(26px);
-    -webkit-transform: translateX(26px);
-    -moz-transform: translateX(26px);
-}
-.gwd-button-rcsv {
-    position: absolute;
-    width: 60px;
-    height: 34px;
-    left: 20px;
-    top: 54px;
-    background-image: none;
-    background-color: rgb(44, 173, 255);
-    border-style: none;
-    border-radius: 2px;
-	font-size: 13.3px;
-  }</style>
-  <!-- <script data-source="googbase_min.js" data-version="4" data-exports-type="googbase" src="googbase_min.js"></script><script data-source="gwd_webcomponents_min.js" data-version="5" data-exports-type="gwd_webcomponents" src="gwd_webcomponents_min.js"></script> -->
-  <!-- <script data-source="gwdpage_min.js" data-version="8" data-exports-type="gwd-page" src="gwdpage_min.js"></script><script data-source="gwdpagedeck_min.js" data-version="9" data-exports-type="gwd-pagedeck" src="gwdpagedeck_min.js"></script> -->
-</head>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Aria2 Integration</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            :root {
+                --bg-primary: #ffffff;
+                --bg-secondary: #f5f5f7;
+                --bg-hover: #e8e8ed;
+                --text-primary: #1d1d1f;
+                --text-secondary: #86868b;
+                --accent: #0071e3;
+                --accent-hover: #0077ed;
+                --success: #34c759;
+                --warning: #ff9500;
+                --error: #ff3b30;
+                --border: #d2d2d7;
+                --shadow: rgba(0, 0, 0, 0.1);
+            }
 
-<body class="document-body">
-  <div is="gwd-pagedeck" class="gwd-page-container" id="pagedeck">
-    <div is="gwd-page" id="page1" class="gwd-page-wrapper page1-content gwd-lightbox gwd-div-18na" data-gwd-width="100px" data-gwd-height="100px">
-      <div class="gwd-page-content page1-content gwd-div-qh3n">
-        <label class="switch">
-          <input id="switch" type="checkbox">
-          <span class="slider"></span>
-        </label>
-        <button class="gwd-button-rcsv" style="text-shadow: rgb(0, 64, 91) 0px 0px 0.5px; color: rgb(255, 255, 255);" id="detail" data-message="UI_detail">Detail</button>
-      </div>
-    </div>
-  </div>
-  <!-- <script src="gwd-init-code.js"></script> -->
-  <script src="../../config.js"></script>
-  <script src="index.js"></script>
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --bg-primary: #1c1c1e;
+                    --bg-secondary: #2c2c2e;
+                    --bg-hover: #3a3a3c;
+                    --text-primary: #f5f5f7;
+                    --text-secondary: #98989d;
+                    --accent: #0a84ff;
+                    --accent-hover: #409cff;
+                    --success: #30d158;
+                    --warning: #ff9f0a;
+                    --error: #ff453a;
+                    --border: #38383a;
+                    --shadow: rgba(0, 0, 0, 0.3);
+                }
+            }
 
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-</body></html>
+            html,
+            body {
+                width: 300px;
+                height: auto;
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    Helvetica, Arial, sans-serif;
+                font-size: 13px;
+                background: var(--bg-primary);
+                color: var(--text-primary);
+            }
+
+            .container {
+                padding: 12px;
+            }
+
+            /* Header */
+            .header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .header-left {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .logo {
+                width: 20px;
+                height: 20px;
+            }
+
+            .title {
+                font-size: 14px;
+                font-weight: 600;
+            }
+
+            .header-right {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            /* Toggle Switch */
+            .toggle {
+                position: relative;
+                width: 40px;
+                height: 22px;
+            }
+
+            .toggle input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            .toggle-slider {
+                position: absolute;
+                cursor: pointer;
+                inset: 0;
+                background: var(--bg-hover);
+                border-radius: 11px;
+                transition: 0.2s ease;
+            }
+
+            .toggle-slider::before {
+                content: "";
+                position: absolute;
+                width: 18px;
+                height: 18px;
+                left: 2px;
+                bottom: 2px;
+                background: white;
+                border-radius: 50%;
+                transition: 0.2s ease;
+                box-shadow: 0 1px 3px var(--shadow);
+            }
+
+            .toggle input:checked + .toggle-slider {
+                background: var(--success);
+            }
+
+            .toggle input:checked + .toggle-slider::before {
+                transform: translateX(18px);
+            }
+
+            /* Status Section */
+            .status-section {
+                padding: 12px 0;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .status-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .status-indicator {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            .status-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--error);
+            }
+
+            .status-dot.connected {
+                background: var(--success);
+            }
+
+            .status-dot.connecting {
+                background: var(--warning);
+                animation: pulse 1.5s infinite;
+            }
+
+            @keyframes pulse {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.4;
+                }
+            }
+
+            .status-text {
+                font-size: 12px;
+                color: var(--text-secondary);
+            }
+
+            .version {
+                font-size: 11px;
+                color: var(--text-secondary);
+            }
+
+            /* Speed Section */
+            .speed-section {
+                display: flex;
+                justify-content: space-around;
+                padding: 12px 0;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .speed-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+            }
+
+            .speed-icon {
+                font-size: 14px;
+            }
+
+            .speed-value {
+                font-size: 14px;
+                font-weight: 600;
+                font-variant-numeric: tabular-nums;
+            }
+
+            .speed-label {
+                font-size: 10px;
+                color: var(--text-secondary);
+                text-transform: uppercase;
+            }
+
+            /* Stats Section */
+            .stats-section {
+                display: flex;
+                justify-content: space-around;
+                padding: 12px 0;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .stat-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 2px;
+            }
+
+            .stat-value {
+                font-size: 18px;
+                font-weight: 600;
+                font-variant-numeric: tabular-nums;
+            }
+
+            .stat-value.active {
+                color: var(--accent);
+            }
+
+            .stat-value.waiting {
+                color: var(--warning);
+            }
+
+            .stat-value.stopped {
+                color: var(--text-secondary);
+            }
+
+            .stat-label {
+                font-size: 10px;
+                color: var(--text-secondary);
+                text-transform: uppercase;
+            }
+
+            /* Actions Section */
+            .actions-section {
+                display: flex;
+                gap: 8px;
+                padding-top: 12px;
+            }
+
+            .btn {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                padding: 8px 12px;
+                border: none;
+                border-radius: 8px;
+                font-size: 12px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.15s ease;
+            }
+
+            .btn-primary {
+                background: var(--accent);
+                color: white;
+            }
+
+            .btn-primary:hover {
+                background: var(--accent-hover);
+            }
+
+            .btn-secondary {
+                background: var(--bg-secondary);
+                color: var(--text-primary);
+            }
+
+            .btn-secondary:hover {
+                background: var(--bg-hover);
+            }
+
+            .btn-icon {
+                width: 14px;
+                height: 14px;
+                fill: currentColor;
+            }
+
+            /* Offline State */
+            .offline-message {
+                display: none;
+                text-align: center;
+                padding: 16px 0;
+                color: var(--text-secondary);
+                font-size: 12px;
+            }
+
+            .offline-message.show {
+                display: block;
+            }
+
+            .speed-section.hidden,
+            .stats-section.hidden {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-left">
+                    <img class="logo" src="../icons/32.png" alt="Logo" />
+                    <span class="title">Aria2</span>
+                </div>
+                <div class="header-right">
+                    <label class="toggle">
+                        <input type="checkbox" id="switch" />
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Status -->
+            <div class="status-section">
+                <div class="status-row">
+                    <div class="status-indicator">
+                        <span class="status-dot" id="statusDot"></span>
+                        <span class="status-text" id="statusText"
+                            >Connecting...</span
+                        >
+                    </div>
+                    <span class="version" id="version"></span>
+                </div>
+            </div>
+
+            <!-- Speed -->
+            <div class="speed-section" id="speedSection">
+                <div class="speed-item">
+                    <span class="speed-icon">↓</span>
+                    <span class="speed-value" id="downloadSpeed">0 B/s</span>
+                    <span class="speed-label" data-i18n="download"
+                        >Download</span
+                    >
+                </div>
+                <div class="speed-item">
+                    <span class="speed-icon">↑</span>
+                    <span class="speed-value" id="uploadSpeed">0 B/s</span>
+                    <span class="speed-label" data-i18n="upload">Upload</span>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-section" id="statsSection">
+                <div class="stat-item">
+                    <span class="stat-value active" id="activeCount">0</span>
+                    <span class="stat-label" data-i18n="active">Active</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value waiting" id="waitingCount">0</span>
+                    <span class="stat-label" data-i18n="waiting">Waiting</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value stopped" id="stoppedCount">0</span>
+                    <span class="stat-label" data-i18n="stopped">Stopped</span>
+                </div>
+            </div>
+
+            <!-- Offline Message -->
+            <div class="offline-message" id="offlineMessage">
+                Unable to connect to Aria2 RPC server.<br />
+                Please check if Aria2 is running.
+            </div>
+
+            <!-- Actions -->
+            <div class="actions-section">
+                <button class="btn btn-primary" id="btnAriaNg">
+                    <svg class="btn-icon" viewBox="0 0 24 24">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                    </svg>
+                    <span data-i18n="openAriaNg">AriaNg</span>
+                </button>
+                <button class="btn btn-secondary" id="btnSettings">
+                    <svg class="btn-icon" viewBox="0 0 24 24">
+                        <path
+                            d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"
+                        />
+                    </svg>
+                    <span data-i18n="settings">Settings</span>
+                </button>
+            </div>
+        </div>
+
+        <script src="../../config.js"></script>
+        <script src="../../lib/aria.js"></script>
+        <script src="index.js"></script>
+    </body>
+</html>
