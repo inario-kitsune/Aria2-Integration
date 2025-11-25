@@ -1,0 +1,281 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="Shortcut Icon" type="image/x-icon" href="../icons/32.png" />
+        <title data-message="OP_title">Aria2 Integration Options</title>
+        <style>
+            :root {
+                --bg-primary: #ffffff;
+                --bg-secondary: #f5f5f7;
+                --bg-tertiary: #e8e8ed;
+                --text-primary: #1d1d1f;
+                --text-secondary: #86868b;
+                --accent: #0071e3;
+                --accent-hover: #0077ed;
+                --border: #d2d2d7;
+                --shadow: rgba(0, 0, 0, 0.08);
+                --sidebar-width: 240px;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --bg-primary: #1c1c1e;
+                    --bg-secondary: #2c2c2e;
+                    --bg-tertiary: #3a3a3c;
+                    --text-primary: #f5f5f7;
+                    --text-secondary: #98989d;
+                    --accent: #0a84ff;
+                    --accent-hover: #409cff;
+                    --border: #38383a;
+                    --shadow: rgba(0, 0, 0, 0.3);
+                }
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                height: 100%;
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    Helvetica, Arial, sans-serif;
+                font-size: 14px;
+                background: var(--bg-secondary);
+                color: var(--text-primary);
+            }
+
+            .container {
+                display: flex;
+                height: 100vh;
+            }
+
+            /* Sidebar */
+            .sidebar {
+                width: var(--sidebar-width);
+                background: var(--bg-primary);
+                border-right: 1px solid var(--border);
+                display: flex;
+                flex-direction: column;
+                flex-shrink: 0;
+            }
+
+            .sidebar-header {
+                padding: 20px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .sidebar-logo {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .sidebar-logo img {
+                width: 28px;
+                height: 28px;
+            }
+
+            .sidebar-logo span {
+                font-size: 16px;
+                font-weight: 600;
+            }
+
+            .sidebar-nav {
+                flex: 1;
+                padding: 12px;
+                overflow-y: auto;
+            }
+
+            .nav-item {
+                display: block;
+                padding: 10px 14px;
+                margin-bottom: 4px;
+                border-radius: 8px;
+                color: var(--text-primary);
+                text-decoration: none;
+                transition: all 0.15s ease;
+                cursor: pointer;
+            }
+
+            .nav-item:hover {
+                background: var(--bg-secondary);
+            }
+
+            .nav-item.active {
+                background: var(--accent);
+                color: white;
+            }
+
+            .nav-group {
+                margin-bottom: 8px;
+            }
+
+            .nav-group-title {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 14px;
+                margin-bottom: 4px;
+                border-radius: 8px;
+                color: var(--text-primary);
+                cursor: pointer;
+                transition: all 0.15s ease;
+            }
+
+            .nav-group-title:hover {
+                background: var(--bg-secondary);
+            }
+
+            .nav-group-title.active {
+                background: var(--accent);
+                color: white;
+            }
+
+            .nav-group-title svg {
+                width: 16px;
+                height: 16px;
+                transition: transform 0.2s ease;
+            }
+
+            .nav-group.expanded .nav-group-title svg {
+                transform: rotate(90deg);
+            }
+
+            .nav-group-items {
+                display: none;
+                padding-left: 12px;
+            }
+
+            .nav-group.expanded .nav-group-items {
+                display: block;
+            }
+
+            .nav-subitem {
+                display: block;
+                padding: 8px 14px;
+                margin-bottom: 2px;
+                border-radius: 6px;
+                color: var(--text-secondary);
+                text-decoration: none;
+                font-size: 13px;
+                transition: all 0.15s ease;
+                cursor: pointer;
+            }
+
+            .nav-subitem:hover {
+                background: var(--bg-secondary);
+                color: var(--text-primary);
+            }
+
+            .nav-subitem.active {
+                background: var(--bg-tertiary);
+                color: var(--accent);
+                font-weight: 500;
+            }
+
+            /* Main Content */
+            .main {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                min-width: 0;
+            }
+
+            .main-header {
+                padding: 20px 24px;
+                background: var(--bg-primary);
+                border-bottom: 1px solid var(--border);
+            }
+
+            .main-header h1 {
+                font-size: 20px;
+                font-weight: 600;
+            }
+
+            .main-content {
+                flex: 1;
+                overflow: hidden;
+            }
+
+            .main-content iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+                background: var(--bg-secondary);
+            }
+
+            /* Version Badge */
+            .version-badge {
+                margin-top: auto;
+                padding: 12px 20px;
+                border-top: 1px solid var(--border);
+                font-size: 11px;
+                color: var(--text-secondary);
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo">
+                        <img src="../icons/32.png" alt="Logo" />
+                        <span>Aria2</span>
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a
+                        class="nav-item active"
+                        data-page="general"
+                        data-message="OP_general"
+                        >General</a
+                    >
+
+                    <a
+                        class="nav-item"
+                        data-page="rpc"
+                        data-message="OP_rpcServer"
+                        >RPC Servers</a
+                    >
+
+                    <a
+                        class="nav-item"
+                        data-page="exception"
+                        data-message="OP_exception"
+                        >Filters</a
+                    >
+                    <a
+                        class="nav-item"
+                        data-page="about"
+                        data-message="OP_about"
+                        >About</a
+                    >
+                </nav>
+
+                <div class="version-badge">v0.4.5</div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main">
+                <header class="main-header">
+                    <h1 id="pageTitle" data-message="OP_general">General</h1>
+                </header>
+                <div class="main-content">
+                    <iframe id="contentFrame" src="general.html"></iframe>
+                </div>
+            </main>
+        </div>
+
+        <script src="/config.js"></script>
+        <script src="menu.js"></script>
+    </body>
+</html>

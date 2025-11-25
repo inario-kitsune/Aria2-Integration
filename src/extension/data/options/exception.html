@@ -1,0 +1,213 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title data-message="OP_filter">Filter Settings</title>
+        <link rel="stylesheet" href="shared.css" />
+        <style>
+            .form-textarea {
+                width: 100%;
+                min-height: 100px;
+                padding: 8px 12px;
+                font-size: 13px;
+                font-family: monospace;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--bg-secondary);
+                color: var(--text-primary);
+                resize: vertical;
+            }
+
+            .form-textarea:focus {
+                outline: none;
+                border-color: var(--accent);
+                box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+            }
+
+            .two-column {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+
+            @media (max-width: 600px) {
+                .two-column {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .inline-input {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .inline-input input {
+                width: 100px;
+            }
+
+            .inline-input span {
+                color: var(--text-secondary);
+                font-size: 13px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="page">
+            <!-- Alt Key Bypass -->
+            <div class="section">
+                <div class="section-title" data-message="OP_quickBypass">
+                    Quick Bypass
+                </div>
+
+                <div class="form-group">
+                    <label class="toggle-row">
+                        <input type="checkbox" id="altKeyBypass" checked />
+                        <span class="toggle-label">
+                            <strong data-message="OP_altKeyBypass"
+                                >Alt + Click Bypass</strong
+                            >
+                            <span
+                                class="form-hint"
+                                data-message="OPN_altKeyBypass"
+                            >
+                                Hold Alt key while clicking to use browser's
+                                native download
+                            </span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Site Filter -->
+            <div class="section">
+                <div class="section-title" data-message="OP_siteFilter">
+                    Site Filter
+                </div>
+                <p
+                    class="form-hint"
+                    style="margin-bottom: 12px; margin-top: -4px"
+                    data-message="OPN_siteFilterHint"
+                >
+                    One pattern per line. Use * as wildcard (e.g.,
+                    *.example.com)
+                </p>
+
+                <div class="two-column">
+                    <div class="form-group">
+                        <label class="form-label" data-message="OP_allowedSites"
+                            >Allowed Sites (Whitelist)</label
+                        >
+                        <textarea
+                            id="allowedSites"
+                            class="form-textarea"
+                            placeholder="github.com&#10;*.example.com"
+                        ></textarea>
+                        <p class="form-hint" data-message="OPN_allowedSites">
+                            Always capture downloads from these sites
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" data-message="OP_blockedSites"
+                            >Blocked Sites (Blacklist)</label
+                        >
+                        <textarea
+                            id="blockedSites"
+                            class="form-textarea"
+                            placeholder="youtube.com&#10;*.google.com"
+                        ></textarea>
+                        <p class="form-hint" data-message="OPN_blockedSites">
+                            Never capture downloads from these sites
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extension Filter -->
+            <div class="section">
+                <div class="section-title" data-message="OP_extFilter">
+                    File Extension Filter
+                </div>
+                <p
+                    class="form-hint"
+                    style="margin-bottom: 12px; margin-top: -4px"
+                    data-message="OPN_extFilterHint"
+                >
+                    One extension per line, include the dot (e.g., .zip)
+                </p>
+
+                <div class="two-column">
+                    <div class="form-group">
+                        <label class="form-label" data-message="OP_allowedExts"
+                            >Allowed Extensions (Whitelist)</label
+                        >
+                        <textarea
+                            id="allowedExts"
+                            class="form-textarea"
+                            placeholder=".zip&#10;.exe&#10;.dmg"
+                        ></textarea>
+                        <p class="form-hint" data-message="OPN_allowedExts">
+                            Only capture these file types (leave empty for all)
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" data-message="OP_blockedExts"
+                            >Blocked Extensions (Blacklist)</label
+                        >
+                        <textarea
+                            id="blockedExts"
+                            class="form-textarea"
+                            placeholder=".html&#10;.php&#10;.asp"
+                        ></textarea>
+                        <p class="form-hint" data-message="OPN_blockedExts">
+                            Never capture these file types
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Size Filter -->
+            <div class="section">
+                <div class="section-title" data-message="OP_sizeFilter">
+                    File Size Filter
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" data-message="OP_minFileSize"
+                        >Minimum File Size</label
+                    >
+                    <div class="inline-input">
+                        <input
+                            type="number"
+                            id="minFileSize"
+                            class="form-input"
+                            placeholder="0"
+                            min="0"
+                        />
+                        <span data-message="OPN_minFileSize"
+                            >MB (files smaller than this won't be
+                            captured)</span
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+                <span class="form-status" id="status"></span>
+                <button
+                    class="btn btn-primary"
+                    id="save"
+                    data-message="OP_save"
+                >
+                    Save
+                </button>
+            </div>
+        </div>
+
+        <script src="/config.js"></script>
+        <script src="exception.js"></script>
+    </body>
+</html>

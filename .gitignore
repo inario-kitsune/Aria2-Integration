@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+*.zip
+dist/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Sample/reference projects
+sample/
+
+# Package manager
+pnpm-lock.yaml

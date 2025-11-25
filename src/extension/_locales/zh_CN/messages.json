@@ -1,0 +1,552 @@
+{
+  "extensionName": {
+    "message": "Aria2 下载管理器集成",
+    "description": "扩展名称"
+  },
+  "extensionDescription": {
+    "message": "替代内置下载管理器，自动捕获下载并发送到 Aria2",
+    "description": "扩展简介"
+  },
+  "translator": {
+    "message": "翻译者",
+    "description": ""
+  },
+  "translatorMessage": {
+    "message": "",
+    "description": ""
+  },
+  "direction": {
+    "message": "ltr",
+    "description": "语言方向"
+  },
+  "enabled": {
+    "message": "已启用",
+    "description": ""
+  },
+  "disabled": {
+    "message": "已禁用",
+    "description": ""
+  },
+  "error_setConfig": {
+    "message": "请先配置 Aria2 设置"
+  },
+  "error_connect": {
+    "message": "连接失败，请检查设置并确保 Aria2 正在运行",
+    "description": ""
+  },
+  "error_notSupported": {
+    "message": "不支持",
+    "description": ""
+  },
+  "success_connect": {
+    "message": "正在下载 $NAME$",
+    "description": "",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "download_complete": {
+    "message": "下载完成: $NAME$",
+    "description": "",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "download_error": {
+    "message": "下载失败: $NAME$",
+    "description": "",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "UI_detail": {
+    "message": "详情",
+    "description": ""
+  },
+  "UI_download": {
+    "message": "下载",
+    "description": ""
+  },
+  "UI_save": {
+    "message": "保存",
+    "description": ""
+  },
+  "UI_saveas": {
+    "message": "另存为",
+    "description": ""
+  },
+  "UI_open": {
+    "message": "打开",
+    "description": ""
+  },
+  "UI_adv": {
+    "message": "高级",
+    "description": ""
+  },
+  "UI_fileName": {
+    "message": "文件名",
+    "description": ""
+  },
+  "UI_filePath": {
+    "message": "文件路径",
+    "description": ""
+  },
+  "UI_from": {
+    "message": "来源",
+    "description": ""
+  },
+  "OP_message1": {
+    "message": "你需要自行下载并启动 Aria2，填写下方的协议、地址、端口、接口后点击保存",
+    "description": ""
+  },
+  "OP_message2": {
+    "message": "如需自动启动 Aria2，可创建启动脚本或使用系统服务",
+    "description": ""
+  },
+  "OP_message3": {
+    "message": "示例配置文件",
+    "description": ""
+  },
+  "OP_defaultPath": {
+    "message": "默认下载路径",
+    "description": ""
+  },
+  "OPN_defaultPath": {
+    "message": "Aria2 下载路径（可选）",
+    "description": ""
+  },
+  "OP_protocol": {
+    "message": "协议",
+    "description": ""
+  },
+  "OPN_protocol": {
+    "message": "RPC 协议: ws、wss、http 或 https。WebSocket (ws/wss) 支持实时功能",
+    "description": ""
+  },
+  "OP_host": {
+    "message": "地址",
+    "description": ""
+  },
+  "OPN_host": {
+    "message": "Aria2 RPC 地址（IP 或域名）",
+    "description": ""
+  },
+  "OP_port": {
+    "message": "端口",
+    "description": ""
+  },
+  "OPN_port": {
+    "message": "Aria2 RPC 端口（默认: 6800）",
+    "description": ""
+  },
+  "OP_interface": {
+    "message": "接口",
+    "description": ""
+  },
+  "OPN_interface": {
+    "message": "Aria2 RPC 路径（默认: jsonrpc）",
+    "description": ""
+  },
+  "OP_token": {
+    "message": "密钥",
+    "description": ""
+  },
+  "OPN_token": {
+    "message": "Aria2 RPC 密钥（可选）",
+    "description": ""
+  },
+  "OP_zoom": {
+    "message": "缩放比例",
+    "description": ""
+  },
+  "OPN_zoom": {
+    "message": "下载面板缩放比例（默认: 1）",
+    "description": ""
+  },
+  "OP_advanced": {
+    "message": "高级选项",
+    "description": ""
+  },
+  "OP_contextMenu": {
+    "message": "右键菜单",
+    "description": ""
+  },
+  "OPN_contextMenu": {
+    "message": "在链接、视频、音频的右键菜单中添加「使用 Aria2 下载」",
+    "description": ""
+  },
+  "OP_aggressive": {
+    "message": "激进模式",
+    "description": ""
+  },
+  "OPN_aggressive": {
+    "message": "捕获更多文件类型（图片、视频、音频），可能影响正常浏览",
+    "description": ""
+  },
+  "OP_winLoc": {
+    "message": "记住窗口位置",
+    "description": ""
+  },
+  "OPN_winLoc": {
+    "message": "保存下载面板位置",
+    "description": ""
+  },
+  "OP_auto": {
+    "message": "自动启动 Aria2",
+    "description": ""
+  },
+  "OPN_auto": {
+    "message": "开始下载时自动启动 Aria2",
+    "description": ""
+  },
+  "OP_autoSet": {
+    "message": "自动配置 AriaNg",
+    "description": ""
+  },
+  "OPN_autoSet": {
+    "message": "打开 AriaNg 时自动应用 RPC 设置",
+    "description": ""
+  },
+  "OP_chgLog": {
+    "message": "显示更新日志",
+    "description": ""
+  },
+  "OPN_chgLog": {
+    "message": "更新后显示更新日志",
+    "description": ""
+  },
+  "OP_badge": {
+    "message": "显示下载数量",
+    "description": ""
+  },
+  "OPN_badge": {
+    "message": "在工具栏图标上显示活动下载数（仅 WebSocket）",
+    "description": ""
+  },
+  "OP_downPanel": {
+    "message": "显示下载面板",
+    "description": ""
+  },
+  "OPN_downPanel": {
+    "message": "自动捕获的下载显示下载面板",
+    "description": ""
+  },
+  "OP_cmDownPanel": {
+    "message": "显示下载面板（右键菜单）",
+    "description": ""
+  },
+  "OPN_cmDownPanel": {
+    "message": "右键菜单下载显示下载面板",
+    "description": ""
+  },
+  "OP_ua": {
+    "message": "发送 User-Agent",
+    "description": ""
+  },
+  "OPN_ua": {
+    "message": "将浏览器 User-Agent 转发给 Aria2",
+    "description": ""
+  },
+  "OP_title": {
+    "message": "Aria2 集成设置",
+    "description": ""
+  },
+  "OP_general": {
+    "message": "常规",
+    "description": ""
+  },
+  "OP_rpcServer": {
+    "message": "RPC 服务器",
+    "description": ""
+  },
+  "OP_rpcDefault": {
+    "message": "默认服务器",
+    "description": ""
+  },
+  "OP_rpc2": {
+    "message": "服务器 2",
+    "description": ""
+  },
+  "OP_rpc3": {
+    "message": "服务器 3",
+    "description": ""
+  },
+  "OP_filter": {
+    "message": "过滤器",
+    "description": ""
+  },
+  "OP_exception": {
+    "message": "过滤器",
+    "description": ""
+  },
+  "OP_about": {
+    "message": "关于",
+    "description": ""
+  },
+  "OP_save": {
+    "message": "保存",
+    "description": ""
+  },
+  "OP_saveComplete": {
+    "message": "已保存",
+    "description": ""
+  },
+  "CM_title": {
+    "message": "使用 Aria2 下载",
+    "description": ""
+  },
+  "about_M1": {
+    "message": "什么是 Aria2？",
+    "description": ""
+  },
+  "about_M2": {
+    "message": "本扩展使用 Mayswind 的 AriaNg",
+    "description": ""
+  },
+  "about_L1": {
+    "message": "扩展主页",
+    "description": ""
+  },
+  "about_L2": {
+    "message": "Aria2 配置示例",
+    "description": ""
+  },
+  "about_L3": {
+    "message": "反馈问题",
+    "description": ""
+  },
+  "about_L4": {
+    "message": "更新日志",
+    "description": ""
+  },
+  "about_L5": {
+    "message": "帮助翻译",
+    "description": ""
+  },
+  "status_connected": {
+    "message": "已连接",
+    "description": ""
+  },
+  "status_disconnected": {
+    "message": "未连接",
+    "description": ""
+  },
+  "status_connecting": {
+    "message": "连接中...",
+    "description": ""
+  },
+  "download": {
+    "message": "下载",
+    "description": ""
+  },
+  "upload": {
+    "message": "上传",
+    "description": ""
+  },
+  "active": {
+    "message": "进行中",
+    "description": ""
+  },
+  "waiting": {
+    "message": "等待中",
+    "description": ""
+  },
+  "stopped": {
+    "message": "已完成",
+    "description": ""
+  },
+  "openAriaNg": {
+    "message": "AriaNg",
+    "description": ""
+  },
+  "settings": {
+    "message": "设置",
+    "description": ""
+  },
+  "offline_message": {
+    "message": "无法连接到 Aria2，请检查 Aria2 是否正在运行",
+    "description": ""
+  },
+  "currentSite": {
+    "message": "当前站点",
+    "description": ""
+  },
+  "siteAllowed": {
+    "message": "已允许",
+    "description": ""
+  },
+  "siteBlocked": {
+    "message": "已屏蔽",
+    "description": ""
+  },
+  "allow": {
+    "message": "允许",
+    "description": ""
+  },
+  "block": {
+    "message": "屏蔽",
+    "description": ""
+  },
+  "remove": {
+    "message": "移除",
+    "description": ""
+  },
+  "OP_quickBypass": {
+    "message": "快速绕过",
+    "description": ""
+  },
+  "OP_altKeyBypass": {
+    "message": "Alt + 点击绕过",
+    "description": ""
+  },
+  "OPN_altKeyBypass": {
+    "message": "按住 Alt 键点击链接时使用浏览器原生下载",
+    "description": ""
+  },
+  "OP_siteFilter": {
+    "message": "站点过滤",
+    "description": ""
+  },
+  "OPN_siteFilterHint": {
+    "message": "每行一个，支持 * 通配符（如 *.example.com）",
+    "description": ""
+  },
+  "OP_allowedSites": {
+    "message": "允许的站点（白名单）",
+    "description": ""
+  },
+  "OPN_allowedSites": {
+    "message": "始终捕获这些站点的下载",
+    "description": ""
+  },
+  "OP_blockedSites": {
+    "message": "屏蔽的站点（黑名单）",
+    "description": ""
+  },
+  "OPN_blockedSites": {
+    "message": "永不捕获这些站点的下载",
+    "description": ""
+  },
+  "OP_extFilter": {
+    "message": "扩展名过滤",
+    "description": ""
+  },
+  "OPN_extFilterHint": {
+    "message": "每行一个，需包含点号（如 .zip）",
+    "description": ""
+  },
+  "OP_allowedExts": {
+    "message": "允许的扩展名（白名单）",
+    "description": ""
+  },
+  "OPN_allowedExts": {
+    "message": "仅捕获这些文件类型（留空表示全部）",
+    "description": ""
+  },
+  "OP_blockedExts": {
+    "message": "屏蔽的扩展名（黑名单）",
+    "description": ""
+  },
+  "OPN_blockedExts": {
+    "message": "永不捕获这些文件类型",
+    "description": ""
+  },
+  "OP_sizeFilter": {
+    "message": "文件大小过滤",
+    "description": ""
+  },
+  "OP_minFileSize": {
+    "message": "最小文件大小",
+    "description": ""
+  },
+  "OPN_minFileSize": {
+    "message": "MB（小于此值的文件不会被捕获）",
+    "description": ""
+  },
+  "OP_winWidth": {
+    "message": "下载面板宽度偏移",
+    "description": ""
+  },
+  "OPN_winWidth": {
+    "message": "微调下载窗口宽度",
+    "description": ""
+  },
+  "OP_winHeight": {
+    "message": "下载面板高度偏移",
+    "description": ""
+  },
+  "OPN_winHeight": {
+    "message": "微调下载窗口高度",
+    "description": ""
+  },
+  "OP_shutdown": {
+    "message": "浏览器关闭时关闭 Aria2",
+    "description": ""
+  },
+  "OPN_shutdown": {
+    "message": "向 Aria2 发送 --stop-with-process=<PID> 命令",
+    "description": ""
+  },
+  "OP_addServer": {
+    "message": "添加服务器",
+    "description": ""
+  },
+  "OP_editServer": {
+    "message": "编辑服务器",
+    "description": ""
+  },
+  "OP_serverName": {
+    "message": "服务器名称",
+    "description": ""
+  },
+  "OPN_rpcServer": {
+    "message": "管理你的 Aria2 RPC 服务器。点击选择激活的服务器。",
+    "description": ""
+  },
+  "OPN_noServers": {
+    "message": "未配置服务器。点击「添加服务器」创建一个。",
+    "description": ""
+  },
+  "OP_edit": {
+    "message": "编辑",
+    "description": ""
+  },
+  "OP_delete": {
+    "message": "删除",
+    "description": ""
+  },
+  "OP_cancel": {
+    "message": "取消",
+    "description": ""
+  },
+  "OP_serverActivated": {
+    "message": "服务器已激活",
+    "description": ""
+  },
+  "OP_deleteComplete": {
+    "message": "已删除",
+    "description": ""
+  },
+  "error_invalidServer": {
+    "message": "请填写主机、端口和接口",
+    "description": ""
+  },
+  "error_lastServer": {
+    "message": "不能删除最后一个服务器",
+    "description": ""
+  },
+  "confirm_deleteServer": {
+    "message": "删除此服务器？",
+    "description": ""
+  },
+  "error_aria2_fallback": {
+    "message": "Aria2 连接失败，已自动使用浏览器下载。",
+    "description": ""
+  }
+}

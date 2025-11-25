@@ -1,0 +1,29 @@
+{
+  "name": "aria2-integration",
+  "version": "0.5.0",
+  "description": "Firefox extension to integrate with Aria2 download manager",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "build:minify": "node scripts/build.js --minify",
+    "build:dev": "node scripts/build.js --sourcemap",
+    "watch": "node scripts/build.js --watch",
+    "package": "pnpm build:minify && cd dist && zip -r ../aria2-integration.zip . -x '*.DS_Store'",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "aria2",
+    "firefox",
+    "extension",
+    "download-manager"
+  ],
+  "author": "RossWang",
+  "license": "MIT",
+  "packageManager": "pnpm@10.22.0",
+  "devDependencies": {
+    "esbuild": "^0.27.0"
+  },
+  "dependencies": {
+    "jschardet": "^3.1.4"
+  }
+}

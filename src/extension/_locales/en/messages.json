@@ -1,0 +1,552 @@
+{
+  "extensionName": {
+    "message": "Aria2 Download Manager Integration",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Replace built-in download manager with Aria2. Automatically captures downloads and sends them to Aria2.",
+    "description": "Description of the extension."
+  },
+  "translator": {
+    "message": "Translator",
+    "description": ""
+  },
+  "translatorMessage": {
+    "message": "",
+    "description": ""
+  },
+  "direction": {
+    "message": "ltr",
+    "description": "Language direction"
+  },
+  "enabled": {
+    "message": "ENABLED",
+    "description": ""
+  },
+  "disabled": {
+    "message": "DISABLED",
+    "description": ""
+  },
+  "error_setConfig": {
+    "message": "Please configure Aria2 settings first"
+  },
+  "error_connect": {
+    "message": "Connection failed. Check your settings and ensure Aria2 is running.",
+    "description": ""
+  },
+  "error_notSupported": {
+    "message": "Not Supported",
+    "description": ""
+  },
+  "success_connect": {
+    "message": "Downloading $NAME$",
+    "description": "",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "download_complete": {
+    "message": "Download Complete: $NAME$",
+    "description": "",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "download_error": {
+    "message": "Download Failed: $NAME$",
+    "description": "",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "UI_detail": {
+    "message": "Details",
+    "description": ""
+  },
+  "UI_download": {
+    "message": "Download",
+    "description": ""
+  },
+  "UI_save": {
+    "message": "Save",
+    "description": ""
+  },
+  "UI_saveas": {
+    "message": "Save As",
+    "description": ""
+  },
+  "UI_open": {
+    "message": "Open",
+    "description": ""
+  },
+  "UI_adv": {
+    "message": "Advanced",
+    "description": ""
+  },
+  "UI_fileName": {
+    "message": "File Name",
+    "description": ""
+  },
+  "UI_filePath": {
+    "message": "File Path",
+    "description": ""
+  },
+  "UI_from": {
+    "message": "From",
+    "description": ""
+  },
+  "OP_message1": {
+    "message": "You need to download and start Aria2 yourself. Complete at least 'Protocol', 'Host', 'Port' and 'Interface' below, then click 'Save'.",
+    "description": ""
+  },
+  "OP_message2": {
+    "message": "To start Aria2 automatically, create a startup script or use a system service.",
+    "description": ""
+  },
+  "OP_message3": {
+    "message": "Sample configuration files are available here.",
+    "description": ""
+  },
+  "OP_defaultPath": {
+    "message": "Default Download Path",
+    "description": ""
+  },
+  "OPN_defaultPath": {
+    "message": "Download path for Aria2 (optional)",
+    "description": ""
+  },
+  "OP_protocol": {
+    "message": "Protocol",
+    "description": ""
+  },
+  "OPN_protocol": {
+    "message": "RPC protocol: ws, wss, http, or https. WebSocket (ws/wss) enables real-time features.",
+    "description": ""
+  },
+  "OP_host": {
+    "message": "Host",
+    "description": ""
+  },
+  "OPN_host": {
+    "message": "Aria2 RPC host (IP or domain name)",
+    "description": ""
+  },
+  "OP_port": {
+    "message": "Port",
+    "description": ""
+  },
+  "OPN_port": {
+    "message": "Aria2 RPC port (default: 6800)",
+    "description": ""
+  },
+  "OP_interface": {
+    "message": "Interface",
+    "description": ""
+  },
+  "OPN_interface": {
+    "message": "Aria2 RPC path (default: jsonrpc)",
+    "description": ""
+  },
+  "OP_token": {
+    "message": "Token",
+    "description": ""
+  },
+  "OPN_token": {
+    "message": "Aria2 RPC secret token (optional)",
+    "description": ""
+  },
+  "OP_zoom": {
+    "message": "Zoom Level",
+    "description": ""
+  },
+  "OPN_zoom": {
+    "message": "Download panel zoom level (default: 1)",
+    "description": ""
+  },
+  "OP_advanced": {
+    "message": "Advanced",
+    "description": ""
+  },
+  "OP_contextMenu": {
+    "message": "Context Menu",
+    "description": ""
+  },
+  "OPN_contextMenu": {
+    "message": "Add 'Download with Aria2' to right-click menu for links, videos and audio",
+    "description": ""
+  },
+  "OP_aggressive": {
+    "message": "Aggressive Mode",
+    "description": ""
+  },
+  "OPN_aggressive": {
+    "message": "Capture more file types (images, videos, audio). May interfere with normal browsing.",
+    "description": ""
+  },
+  "OP_winLoc": {
+    "message": "Remember Window Position",
+    "description": ""
+  },
+  "OPN_winLoc": {
+    "message": "Save download panel position",
+    "description": ""
+  },
+  "OP_auto": {
+    "message": "Auto Start Aria2",
+    "description": ""
+  },
+  "OPN_auto": {
+    "message": "Automatically start Aria2 when a download begins",
+    "description": ""
+  },
+  "OP_autoSet": {
+    "message": "Auto Configure AriaNg",
+    "description": ""
+  },
+  "OPN_autoSet": {
+    "message": "Automatically apply RPC settings when opening AriaNg",
+    "description": ""
+  },
+  "OP_chgLog": {
+    "message": "Show Changelog",
+    "description": ""
+  },
+  "OPN_chgLog": {
+    "message": "Display changelog after updates",
+    "description": ""
+  },
+  "OP_badge": {
+    "message": "Show Download Count",
+    "description": ""
+  },
+  "OPN_badge": {
+    "message": "Display active download count on toolbar icon (WebSocket only)",
+    "description": ""
+  },
+  "OP_downPanel": {
+    "message": "Show Download Panel",
+    "description": ""
+  },
+  "OPN_downPanel": {
+    "message": "Display download panel for automatically captured downloads",
+    "description": ""
+  },
+  "OP_cmDownPanel": {
+    "message": "Show Download Panel (Context Menu)",
+    "description": ""
+  },
+  "OPN_cmDownPanel": {
+    "message": "Display download panel for context menu downloads",
+    "description": ""
+  },
+  "OP_ua": {
+    "message": "Send User-Agent",
+    "description": ""
+  },
+  "OPN_ua": {
+    "message": "Forward browser User-Agent to Aria2",
+    "description": ""
+  },
+  "OP_title": {
+    "message": "Aria2 Integration Settings",
+    "description": ""
+  },
+  "OP_general": {
+    "message": "General",
+    "description": ""
+  },
+  "OP_rpcServer": {
+    "message": "RPC Servers",
+    "description": ""
+  },
+  "OP_rpcDefault": {
+    "message": "Default Server",
+    "description": ""
+  },
+  "OP_rpc2": {
+    "message": "Server 2",
+    "description": ""
+  },
+  "OP_rpc3": {
+    "message": "Server 3",
+    "description": ""
+  },
+  "OP_filter": {
+    "message": "Filters",
+    "description": ""
+  },
+  "OP_exception": {
+    "message": "Filters",
+    "description": ""
+  },
+  "OP_about": {
+    "message": "About",
+    "description": ""
+  },
+  "OP_save": {
+    "message": "Save",
+    "description": ""
+  },
+  "OP_saveComplete": {
+    "message": "Saved",
+    "description": ""
+  },
+  "CM_title": {
+    "message": "Download with Aria2",
+    "description": ""
+  },
+  "about_M1": {
+    "message": "What is Aria2?",
+    "description": ""
+  },
+  "about_M2": {
+    "message": "This extension uses AriaNg by Mayswind.",
+    "description": ""
+  },
+  "about_L1": {
+    "message": "Extension Homepage",
+    "description": ""
+  },
+  "about_L2": {
+    "message": "Aria2 Configuration Samples",
+    "description": ""
+  },
+  "about_L3": {
+    "message": "Report Issues",
+    "description": ""
+  },
+  "about_L4": {
+    "message": "Changelog",
+    "description": ""
+  },
+  "about_L5": {
+    "message": "Help Translate",
+    "description": ""
+  },
+  "status_connected": {
+    "message": "Connected",
+    "description": ""
+  },
+  "status_disconnected": {
+    "message": "Disconnected",
+    "description": ""
+  },
+  "status_connecting": {
+    "message": "Connecting...",
+    "description": ""
+  },
+  "download": {
+    "message": "Download",
+    "description": ""
+  },
+  "upload": {
+    "message": "Upload",
+    "description": ""
+  },
+  "active": {
+    "message": "Active",
+    "description": ""
+  },
+  "waiting": {
+    "message": "Waiting",
+    "description": ""
+  },
+  "stopped": {
+    "message": "Stopped",
+    "description": ""
+  },
+  "openAriaNg": {
+    "message": "AriaNg",
+    "description": ""
+  },
+  "settings": {
+    "message": "Settings",
+    "description": ""
+  },
+  "offline_message": {
+    "message": "Cannot connect to Aria2. Please check if Aria2 is running.",
+    "description": ""
+  },
+  "currentSite": {
+    "message": "Current site",
+    "description": ""
+  },
+  "siteAllowed": {
+    "message": "Allowed",
+    "description": ""
+  },
+  "siteBlocked": {
+    "message": "Blocked",
+    "description": ""
+  },
+  "allow": {
+    "message": "Allow",
+    "description": ""
+  },
+  "block": {
+    "message": "Block",
+    "description": ""
+  },
+  "remove": {
+    "message": "Remove",
+    "description": ""
+  },
+  "OP_quickBypass": {
+    "message": "Quick Bypass",
+    "description": ""
+  },
+  "OP_altKeyBypass": {
+    "message": "Alt + Click Bypass",
+    "description": ""
+  },
+  "OPN_altKeyBypass": {
+    "message": "Hold Alt key while clicking to use browser's native download",
+    "description": ""
+  },
+  "OP_siteFilter": {
+    "message": "Site Filter",
+    "description": ""
+  },
+  "OPN_siteFilterHint": {
+    "message": "One pattern per line. Use * as wildcard (e.g., *.example.com)",
+    "description": ""
+  },
+  "OP_allowedSites": {
+    "message": "Allowed Sites (Whitelist)",
+    "description": ""
+  },
+  "OPN_allowedSites": {
+    "message": "Always capture downloads from these sites",
+    "description": ""
+  },
+  "OP_blockedSites": {
+    "message": "Blocked Sites (Blacklist)",
+    "description": ""
+  },
+  "OPN_blockedSites": {
+    "message": "Never capture downloads from these sites",
+    "description": ""
+  },
+  "OP_extFilter": {
+    "message": "File Extension Filter",
+    "description": ""
+  },
+  "OPN_extFilterHint": {
+    "message": "One extension per line, include the dot (e.g., .zip)",
+    "description": ""
+  },
+  "OP_allowedExts": {
+    "message": "Allowed Extensions (Whitelist)",
+    "description": ""
+  },
+  "OPN_allowedExts": {
+    "message": "Only capture these file types (leave empty for all)",
+    "description": ""
+  },
+  "OP_blockedExts": {
+    "message": "Blocked Extensions (Blacklist)",
+    "description": ""
+  },
+  "OPN_blockedExts": {
+    "message": "Never capture these file types",
+    "description": ""
+  },
+  "OP_sizeFilter": {
+    "message": "File Size Filter",
+    "description": ""
+  },
+  "OP_minFileSize": {
+    "message": "Minimum File Size",
+    "description": ""
+  },
+  "OPN_minFileSize": {
+    "message": "MB (files smaller than this won't be captured)",
+    "description": ""
+  },
+  "OP_winWidth": {
+    "message": "Download Panel Width Offset",
+    "description": ""
+  },
+  "OPN_winWidth": {
+    "message": "Fine tune download window width",
+    "description": ""
+  },
+  "OP_winHeight": {
+    "message": "Download Panel Height Offset",
+    "description": ""
+  },
+  "OPN_winHeight": {
+    "message": "Fine tune download window height",
+    "description": ""
+  },
+  "OP_shutdown": {
+    "message": "Shutdown Aria2 with Browser",
+    "description": ""
+  },
+  "OPN_shutdown": {
+    "message": "Send --stop-with-process=<PID> command to Aria2",
+    "description": ""
+  },
+  "OP_addServer": {
+    "message": "Add Server",
+    "description": ""
+  },
+  "OP_editServer": {
+    "message": "Edit Server",
+    "description": ""
+  },
+  "OP_serverName": {
+    "message": "Server Name",
+    "description": ""
+  },
+  "OPN_rpcServer": {
+    "message": "Manage your Aria2 RPC servers. Click to select active server.",
+    "description": ""
+  },
+  "OPN_noServers": {
+    "message": "No servers configured. Click \"Add Server\" to create one.",
+    "description": ""
+  },
+  "OP_edit": {
+    "message": "Edit",
+    "description": ""
+  },
+  "OP_delete": {
+    "message": "Delete",
+    "description": ""
+  },
+  "OP_cancel": {
+    "message": "Cancel",
+    "description": ""
+  },
+  "OP_serverActivated": {
+    "message": "Server activated",
+    "description": ""
+  },
+  "OP_deleteComplete": {
+    "message": "Deleted",
+    "description": ""
+  },
+  "error_invalidServer": {
+    "message": "Please fill in Host, Port and Interface",
+    "description": ""
+  },
+  "error_lastServer": {
+    "message": "Cannot delete the last server",
+    "description": ""
+  },
+  "confirm_deleteServer": {
+    "message": "Delete this server?",
+    "description": ""
+  },
+  "error_aria2_fallback": {
+    "message": "Aria2 connection failed. Using browser download as fallback.",
+    "description": ""
+  }
+}
