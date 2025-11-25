@@ -36,7 +36,7 @@
     "128": "data/icons/128.png",
     "256": "data/icons/256.png"
   },
-  "homepage_url": "https://addons.mozilla.org/firefox/addon/aria2-integration",
+  "homepage_url": "https://github.com/inario-kitsune/Aria2-Integration",
   "options_ui": {
     "page": "data/options/menu.html",
     "open_in_tab": true

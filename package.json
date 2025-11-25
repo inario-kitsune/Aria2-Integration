@@ -11,6 +11,14 @@
     "package": "pnpm build:minify && cd dist && zip -r ../aria2-integration.zip . -x '*.DS_Store'",
     "clean": "rm -rf dist"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:inario-kitsune/Aria2-Integration.git"
+  },
+  "homepage": "https://github.com/inario-kitsune/Aria2-Integration",
+  "bugs": {
+    "url": "https://github.com/inario-kitsune/Aria2-Integration/issues"
+  },
   "keywords": [
     "aria2",
     "firefox",
