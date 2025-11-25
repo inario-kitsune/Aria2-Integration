@@ -158,7 +158,10 @@ function loadServerList() {
     }
 
     const select = elements.serverSelect;
-    select.innerHTML = "";
+    // Clear select options safely
+    while (select.firstChild) {
+      select.removeChild(select.firstChild);
+    }
 
     if (servers.length === 0) {
       const option = document.createElement("option");

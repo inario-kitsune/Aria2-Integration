@@ -49,7 +49,7 @@
       "all_frames": true
     }
   ],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_security_policy": "script-src 'self'; object-src 'self'",
   "browser_specific_settings": {
     "gecko": {
       "id": "{588549ab-78d4-4413-aa1f-b7c433eec2a1}",

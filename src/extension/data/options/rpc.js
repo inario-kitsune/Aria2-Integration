@@ -17,10 +17,18 @@ function parseServers(serversJson) {
 // 渲染服务器列表
 function renderServerList() {
   const listEl = document.getElementById("serverList");
-  listEl.innerHTML = "";
+  // Clear list safely
+  while (listEl.firstChild) {
+    listEl.removeChild(listEl.firstChild);
+  }
 
   if (servers.length === 0) {
-    listEl.innerHTML = `<p class="form-hint" data-message="OPN_noServers">No servers configured. Click "Add Server" to create one.</p>`;
+    const hint = document.createElement("p");
+    hint.className = "form-hint";
+    hint.dataset.message = "OPN_noServers";
+    hint.textContent =
+      'No servers configured. Click "Add Server" to create one.';
+    listEl.appendChild(hint);
     applyI18n();
     return;
   }
@@ -33,31 +41,58 @@ function renderServerList() {
 
     const details = `${server.protocol}://${server.host}:${server.port}/${server.interf}`;
 
-    serverEl.innerHTML = `
-      <input
-        type="radio"
-        name="activeServer"
-        class="server-radio"
-        ${isActive ? "checked" : ""}
-        value="${server.id}"
-      />
-      <div class="server-info">
-        <div class="server-name">${escapeHtml(server.name || "Unnamed Server")}</div>
-        <div class="server-details">${escapeHtml(details)}</div>
-      </div>
-      <div class="server-actions">
-        <button class="btn-icon edit-btn" data-id="${server.id}">
-          ✏️ <span data-message="OP_edit">Edit</span>
-        </button>
-        ${
-          servers.length > 1
-            ? `<button class="btn-icon btn-delete delete-btn" data-id="${server.id}">
-            🗑️ <span data-message="OP_delete">Delete</span>
-          </button>`
-            : ""
-        }
-      </div>
-    `;
+    // Create radio input
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "activeServer";
+    radio.className = "server-radio";
+    radio.value = server.id;
+    radio.checked = isActive;
+    serverEl.appendChild(radio);
+
+    // Create server info
+    const infoDiv = document.createElement("div");
+    infoDiv.className = "server-info";
+
+    const nameDiv = document.createElement("div");
+    nameDiv.className = "server-name";
+    nameDiv.textContent = server.name || "Unnamed Server";
+
+    const detailsDiv = document.createElement("div");
+    detailsDiv.className = "server-details";
+    detailsDiv.textContent = details;
+
+    infoDiv.appendChild(nameDiv);
+    infoDiv.appendChild(detailsDiv);
+    serverEl.appendChild(infoDiv);
+
+    // Create server actions
+    const actionsDiv = document.createElement("div");
+    actionsDiv.className = "server-actions";
+
+    const editBtn = document.createElement("button");
+    editBtn.className = "btn-icon edit-btn";
+    editBtn.dataset.id = server.id;
+    editBtn.textContent = "✏️ ";
+    const editSpan = document.createElement("span");
+    editSpan.dataset.message = "OP_edit";
+    editSpan.textContent = "Edit";
+    editBtn.appendChild(editSpan);
+    actionsDiv.appendChild(editBtn);
+
+    if (servers.length > 1) {
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "btn-icon btn-delete delete-btn";
+      deleteBtn.dataset.id = server.id;
+      deleteBtn.textContent = "🗑️ ";
+      const deleteSpan = document.createElement("span");
+      deleteSpan.dataset.message = "OP_delete";
+      deleteSpan.textContent = "Delete";
+      deleteBtn.appendChild(deleteSpan);
+      actionsDiv.appendChild(deleteBtn);
+    }
+
+    serverEl.appendChild(actionsDiv);
 
     // 点击整个项目选择服务器
     serverEl.addEventListener("click", (e) => {
