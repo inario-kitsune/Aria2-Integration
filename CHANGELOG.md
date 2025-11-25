@@ -1,3 +1,69 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [0.5.0](https://github.com/inario-kitsune/Aria2-Integration/releases/tag/v0.5.0) (2025-11-25)
+
+### Major Changes
+
+#### 🏗️ Project Restructure
+* **Reorganized project structure** from `App/` to `src/extension/` for better maintainability
+* **Set up modern build system** with pnpm and esbuild bundling
+* **Created modular codebase** with separate `src/lib/` for reusable components
+
+#### 🚀 Dynamic RPC Server Management
+* **Replaced fixed 3-server limit** with dynamic add/delete server system
+* **Server management UI** with add, edit, and delete capabilities
+* **Active server tracking** with server selection in download panel
+* **JSON-based storage** for unlimited server configurations
+
+#### 🎨 UI/UX Improvements
+* **Upgraded AriaNg** from v1.1.1 to v1.3.7
+* **Modernized UI design** across all settings pages
+* **Simplified navigation** in options menu
+* **Fixed download panel height constraints** to ensure buttons remain visible
+* **Removed redundant Save/SaveAs buttons** (functionality replaced by Alt+Click)
+
+#### 📥 Enhanced Download Features
+* **Alt+Click bypass** - Hold Alt key to use browser's native download instead of Aria2
+* **Automatic fallback** - Falls back to browser download when Aria2 connection fails
+* **Retry logic** - Waits 3 seconds and retries once before fallback
+* **Whitelist/Blacklist filtering** - Advanced URL pattern matching for download interception
+* **Content script injection** for Alt key detection on all pages
+
+#### 🔧 Code Quality & Architecture
+* **Created Aria2Client class** for better WebSocket/HTTP connection management
+* **Improved error handling** with user-friendly notifications
+* **Removed deprecated features**: Sound notifications, old exception filters
+* **Fixed redundant WebSocket connection attempts**
+* **Updated configuration system** for better compatibility
+
+#### 🌍 Internationalization
+* **Updated translations** for all new features (English, Chinese, German, Traditional Chinese)
+* **Fixed translation syntax errors** (Chinese quotation marks)
+* **Added new translation keys** for server management and error messages
+
+#### 📝 Documentation
+* **Comprehensive README** with installation, development, and configuration guides
+* **Updated repository links** to fork repository
+* **Added package.json metadata** (repository, homepage, bugs)
+
+### Breaking Changes
+
+* Configuration structure changed from fixed `s2`/`s3` to dynamic `rpcServers` array
+* Removed sound notification feature completely
+* Removed old exception filter implementation
+* Navigation structure simplified (removed nav-group)
+
+### Migration Notes
+
+Existing users upgrading from 0.4.5:
+- Server configurations will need to be re-entered in the new RPC Servers section
+- Sound notification settings will be removed (feature deprecated)
+- Old exception filters will be replaced with new whitelist/blacklist system
+
+---
+
 ## [0.4.5](https://github.com/RossWang/Aria2-Integration/compare/0.4.4...0.4.5) (2019-06-14)
 
 
