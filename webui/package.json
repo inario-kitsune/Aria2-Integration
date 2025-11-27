@@ -1,0 +1,25 @@
+{
+  "name": "arcui",
+  "version": "0.1.0",
+  "description": "ArcUI - Lightweight web interface for Aria2 download manager",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "aria2",
+    "download-manager",
+    "svelte",
+    "web-ui"
+  ],
+  "author": "inario-kitsune",
+  "license": "MIT",
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "svelte": "^4.2.0",
+    "vite": "^5.0.0"
+  },
+  "dependencies": {}
+}

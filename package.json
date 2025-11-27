@@ -1,15 +1,19 @@
 {
-  "name": "aria2-integration",
-  "version": "0.5.0",
-  "description": "Firefox extension to integrate with Aria2 download manager",
+  "name": "arc-integration",
+  "version": "0.6.0",
+  "description": "ArcIntegration - Browser extension to integrate with Aria2",
   "type": "module",
   "scripts": {
-    "build": "node scripts/build.js",
-    "build:minify": "node scripts/build.js --minify",
-    "build:dev": "node scripts/build.js --sourcemap",
+    "build": "pnpm build:webui && node scripts/build.js",
+    "build:minify": "pnpm build:webui && node scripts/build.js --minify",
+    "build:dev": "pnpm build:webui && node scripts/build.js --sourcemap",
+    "build:webui": "cd webui && pnpm install && pnpm run build",
     "watch": "node scripts/build.js --watch",
-    "package": "pnpm build:minify && cd dist && zip -r ../aria2-integration.zip . -x '*.DS_Store'",
-    "clean": "rm -rf dist"
+    "package": "pnpm build:minify && cd dist && zip -r ../arc-integration.zip . -x '*.DS_Store'",
+    "package:source": "node scripts/package-source.js",
+    "package:all": "pnpm package && pnpm package:source",
+    "clean": "rm -rf dist",
+    "clean:all": "rm -rf dist node_modules webui/node_modules webui/dist *.zip"
   },
   "repository": {
     "type": "git",

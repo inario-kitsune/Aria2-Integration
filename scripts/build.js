@@ -24,6 +24,40 @@ const isWatch = process.argv.includes("--watch");
 const isMinify = process.argv.includes("--minify");
 const isSourcemap = process.argv.includes("--sourcemap");
 
+// Sync fields from package.json to manifest.json
+function syncVersion() {
+  const packageJson = JSON.parse(
+    readFileSync(join(rootDir, "package.json"), "utf-8"),
+  );
+  const manifestPath = join(srcExtension, "manifest.json");
+  const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
+
+  let changed = false;
+
+  // Sync version
+  if (manifest.version !== packageJson.version) {
+    console.log(
+      `Syncing version: ${manifest.version} -> ${packageJson.version}`,
+    );
+    manifest.version = packageJson.version;
+    changed = true;
+  }
+
+  // Sync homepage_url
+  if (packageJson.homepage && manifest.homepage_url !== packageJson.homepage) {
+    console.log(
+      `Syncing homepage_url: ${manifest.homepage_url} -> ${packageJson.homepage}`,
+    );
+    manifest.homepage_url = packageJson.homepage;
+    changed = true;
+  }
+
+  if (changed) {
+    writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
+    console.log("✓ Manifest synced with package.json");
+  }
+}
+
 // Clean and create dist directory
 function prepareDist() {
   if (existsSync(distDir)) {
@@ -47,6 +81,19 @@ function copyExtension() {
     if (existsSync(filePath)) {
       rmSync(filePath);
     }
+  }
+
+  // Copy Svelte Web UI build to dist
+  const webuiDist = join(rootDir, "webui/dist");
+  const webuiTarget = join(distDir, "data/webui");
+  if (existsSync(webuiDist)) {
+    console.log("Copying Svelte Web UI...");
+    cpSync(webuiDist, webuiTarget, { recursive: true });
+    console.log("✓ Svelte Web UI copied");
+  } else {
+    console.warn(
+      "⚠ Warning: webui/dist not found, run 'pnpm build:webui' first",
+    );
   }
 
   console.log("✓ Extension files copied");
@@ -90,13 +137,16 @@ async function build() {
   console.log("Building extension...\n");
 
   try {
-    // Step 1: Prepare dist directory
+    // Step 1: Sync version
+    syncVersion();
+
+    // Step 2: Prepare dist directory
     prepareDist();
 
-    // Step 2: Copy extension files
+    // Step 3: Copy extension files
     copyExtension();
 
-    // Step 3: Build JS bundles
+    // Step 4: Build JS bundles
     console.log("\nBuilding JavaScript bundles...");
     for (const config of builds) {
       await esbuild.build({

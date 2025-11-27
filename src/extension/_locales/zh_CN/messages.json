@@ -1,10 +1,10 @@
 {
   "extensionName": {
-    "message": "Aria2 下载管理器集成",
+    "message": "ArcIntegration",
     "description": "扩展名称"
   },
   "extensionDescription": {
-    "message": "替代内置下载管理器，自动捕获下载并发送到 Aria2",
+    "message": "浏览器扩展，与 Aria2 集成，自动捕获下载并发送到 Aria2",
     "description": "扩展简介"
   },
   "translator": {
@@ -361,8 +361,8 @@
     "message": "已完成",
     "description": ""
   },
-  "openAriaNg": {
-    "message": "AriaNg",
+  "openWebUI": {
+    "message": "Web UI",
     "description": ""
   },
   "settings": {
@@ -397,6 +397,34 @@
     "message": "移除",
     "description": ""
   },
+  "blockMenuTitle": {
+    "message": "屏蔽选项",
+    "description": ""
+  },
+  "allowMenuTitle": {
+    "message": "允许选项",
+    "description": ""
+  },
+  "blockExact": {
+    "message": "屏蔽当前域名",
+    "description": ""
+  },
+  "blockWildcard": {
+    "message": "屏蔽所有子域名 (*.域名)",
+    "description": ""
+  },
+  "allowExact": {
+    "message": "允许当前域名",
+    "description": ""
+  },
+  "allowWildcard": {
+    "message": "允许所有子域名 (*.域名)",
+    "description": ""
+  },
+  "cancel": {
+    "message": "取消",
+    "description": ""
+  },
   "OP_quickBypass": {
     "message": "快速绕过",
     "description": ""
@@ -409,52 +437,80 @@
     "message": "按住 Alt 键点击链接时使用浏览器原生下载",
     "description": ""
   },
+  "OP_add": {
+    "message": "添加",
+    "description": ""
+  },
+  "OP_remove": {
+    "message": "移除",
+    "description": ""
+  },
+  "OP_alreadyExists": {
+    "message": "已在列表中",
+    "description": ""
+  },
+  "OP_whitelist": {
+    "message": "白名单（仅允许）",
+    "description": ""
+  },
+  "OP_blacklist": {
+    "message": "黑名单（仅屏蔽）",
+    "description": ""
+  },
   "OP_siteFilter": {
     "message": "站点过滤",
     "description": ""
   },
-  "OPN_siteFilterHint": {
-    "message": "每行一个，支持 * 通配符（如 *.example.com）",
+  "OP_siteFilterMode": {
+    "message": "过滤模式",
     "description": ""
   },
-  "OP_allowedSites": {
-    "message": "允许的站点（白名单）",
+  "OPN_siteFilterMode": {
+    "message": "白名单：仅捕获列表中站点的下载。黑名单：永不捕获列表中站点的下载。",
     "description": ""
   },
-  "OPN_allowedSites": {
-    "message": "始终捕获这些站点的下载",
+  "OP_siteList": {
+    "message": "站点列表",
     "description": ""
   },
-  "OP_blockedSites": {
-    "message": "屏蔽的站点（黑名单）",
+  "OPN_siteListHint": {
+    "message": "支持 * 通配符（如 *.example.com 匹配 www.example.com、api.example.com）",
     "description": ""
   },
-  "OPN_blockedSites": {
-    "message": "永不捕获这些站点的下载",
+  "OPN_siteInputPlaceholder": {
+    "message": "example.com 或 *.example.com",
+    "description": ""
+  },
+  "OPN_noSites": {
+    "message": "未添加站点",
     "description": ""
   },
   "OP_extFilter": {
     "message": "扩展名过滤",
     "description": ""
   },
-  "OPN_extFilterHint": {
-    "message": "每行一个，需包含点号（如 .zip）",
+  "OP_extFilterMode": {
+    "message": "过滤模式",
     "description": ""
   },
-  "OP_allowedExts": {
-    "message": "允许的扩展名（白名单）",
+  "OPN_extFilterMode": {
+    "message": "白名单：仅捕获这些文件类型。黑名单：永不捕获这些文件类型。",
     "description": ""
   },
-  "OPN_allowedExts": {
-    "message": "仅捕获这些文件类型（留空表示全部）",
+  "OP_extList": {
+    "message": "扩展名列表",
     "description": ""
   },
-  "OP_blockedExts": {
-    "message": "屏蔽的扩展名（黑名单）",
+  "OPN_extListHint": {
+    "message": "需包含点号（如 .zip、.exe、.dmg）",
     "description": ""
   },
-  "OPN_blockedExts": {
-    "message": "永不捕获这些文件类型",
+  "OPN_extInputPlaceholder": {
+    "message": ".zip 或 .exe",
+    "description": ""
+  },
+  "OPN_noExts": {
+    "message": "未添加扩展名",
     "description": ""
   },
   "OP_sizeFilter": {
@@ -527,6 +583,18 @@
   },
   "OP_serverActivated": {
     "message": "服务器已激活",
+    "description": ""
+  },
+  "OP_default": {
+    "message": "默认",
+    "description": ""
+  },
+  "OP_setDefault": {
+    "message": "设为默认",
+    "description": ""
+  },
+  "OP_defaultSet": {
+    "message": "已设置为 AriaNg 注入的默认服务器",
     "description": ""
   },
   "OP_deleteComplete": {

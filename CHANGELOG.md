@@ -2,6 +2,100 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.0](https://github.com/inario-kitsune/Aria2-Integration/releases/tag/v0.6.0) (2025-11-27)
+
+### 🎨 Brand Refresh - ArcIntegration
+
+#### Rebranding
+* **Project renamed to ArcIntegration** - Now part of the Arc series (ArcUI, arc-core, arc-cli)
+* **New Arch Linux-inspired logo** - Minimalist "A" design with curved horizontal bar and arc cutout
+* **Updated branding across all files** - Extension name, descriptions, and documentation
+
+#### Visual Identity
+* **New icon design** - Arch Linux blue (#1793D1) with white logo on circular background
+* **Generated icons in all sizes** - 16, 32, 48, 64, 128, 256px for normal and disabled states
+* **SVG source files** - Vector graphics for easy regeneration (assets/logo.svg)
+* **Icon generation script** - Automated PNG generation from SVG sources
+
+### 🔧 UI/UX Enhancements
+
+#### Unified Filter System
+* **Single filter mode toggle** - Replaced dual blacklist/whitelist with unified system
+* **Item-by-item management** - Add/remove buttons replace textarea for site and extension filters
+* **Improved filter UI** - Mode toggle buttons for whitelist/blacklist switching
+* **Quick site blocking** - Popup allows one-click site filtering with wildcard support
+* **Referer-based filtering** - Block downloads from subdomains when parent domain is blocked
+
+#### Settings Cleanup
+* **Removed obsolete features** - Aggressive Mode, Shutdown Aria2c, Remember window location, Aria2 Auto Start
+* **User-Agent always enabled** - Simplified settings by making UA transmission default
+* **About page cleanup** - Removed AriaNg references and outdated links
+* **Version synchronization** - Display version dynamically from manifest
+
+### 🐛 Bug Fixes
+
+#### Filter System
+* **Fixed popup blocking** - Site filter mode now properly saves to storage
+* **Fixed wildcard matching** - Corrected pattern from `.*` to `[^.]*` for subdomain matching
+* **Fixed settings display** - Added missing filter fields to config.command.guess
+* **Fixed cross-subdomain blocking** - Downloads from download.app.com now blocked when www.app.com is blocked
+
+#### Code Quality
+* **Syntax error fix** - Resolved "return not in function" error from aggressive mode removal
+* **Improved error logging** - Converted console.log to console.error with meaningful context
+* **Removed sensitive data logging** - No longer logs URLs, cookies, or request headers
+
+### 🧹 Code Cleanup
+
+#### Logging System
+* **Removed 22 verbose debug logs** - Cleaned up trace logging from popup and settings
+* **Removed 4 sensitive data logs** - No longer logs cookies, headers, or full storage objects
+* **Improved 11 error logs** - Better error messages with proper console.error usage
+* **Kept 19 critical logs** - Maintained important logs for troubleshooting filters and errors
+
+#### Documentation
+* **New PACKAGING.md** - Complete guide for creating distribution packages
+* **Updated BUILD_INSTRUCTIONS.md** - Added icon generation, packaging scripts, and ArcUI info
+* **Updated README.md** - Comprehensive documentation with Arc series branding
+* **Logo design documentation** - assets/README.md explains design and regeneration
+
+### 🚀 Build System Improvements
+
+#### Automatic Synchronization
+* **Manifest sync from package.json** - Version and homepage_url automatically synced during build
+* **Build script enhancements** - syncVersion() function handles multiple fields
+
+#### Packaging Scripts
+* **Updated package names** - arc-integration.zip and arc-integration-source.zip
+* **New package:all command** - Creates both extension and source packages
+* **Updated source packaging** - Includes assets/ directory with logo sources
+* **New clean:all command** - Removes all build artifacts and dependencies
+
+#### Icon Generation
+* **generate-icons.sh script** - Automated icon generation from SVG to PNG
+* **Multiple sizes supported** - Generates all 6 sizes for normal and disabled states
+* **ImageMagick integration** - Uses magick command for high-quality conversion
+
+### 📦 Package Information
+
+* **Package name**: arc-integration
+* **Version**: 0.6.0
+* **Description**: ArcIntegration - Browser extension to integrate with Aria2
+* **Extension package**: ~236 KB
+* **Source package**: ~345 KB
+
+### 🔄 Migration Notes
+
+No breaking changes for users upgrading from 0.5.0. All settings and configurations are preserved.
+
+Developers should note:
+- Project renamed but maintains same functionality
+- New logo and icon assets in assets/ directory
+- Package names changed to arc-integration-*
+- Additional documentation files added
+
+---
+
 ## [0.5.0](https://github.com/inario-kitsune/Aria2-Integration/releases/tag/v0.5.0) (2025-11-25)
 
 ### Major Changes

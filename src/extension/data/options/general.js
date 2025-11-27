@@ -3,30 +3,17 @@
 function save() {
 	const zoom = document.getElementById('zoom').value;
 	const menu = document.getElementById('cm').checked;
-	const ua = document.getElementById('ua').checked;
-	const shutdown = document.getElementById('shut').checked;
-	const aggressive = document.getElementById('aggre').checked;
-	const windowLoc = document.getElementById('winLoc').checked;
-	const auto = document.getElementById('auto').checked;
-	const autoSet = document.getElementById('autoSet').checked;
 	const chgLog = document.getElementById('chgLog').checked;
 	const badge = document.getElementById('badge').checked;
 	const downPanel = document.getElementById('downPanel').checked;
 	const cmDownPanel = document.getElementById('cmDownPanel').checked;
 	const dpHeight = document.getElementById('dpHeight').value;
 	const dpWidth = document.getElementById('dpWidth').value;
-	if (!windowLoc){
-		browser.storage.local.remove(['dpLeft','dpTop']);
-	}
+
 	browser.storage.local.set({
 		zoom,
 		menu,
-		ua,
-		shutdown,
-		aggressive,
-		windowLoc,
-		auto,
-		autoSet,
+		ua: true, // Always send User-Agent
 		chgLog,
 		badge,
 		downPanel,
@@ -49,12 +36,6 @@ function restore() {
 	browser.storage.local.get(Object.assign(config.command.guess), prefs => {
 		document.getElementById('zoom').value = prefs.zoom;
 		document.getElementById('cm').checked = prefs.menu;
-		document.getElementById('ua').checked = prefs.ua;
-		document.getElementById('shut').checked = prefs.shutdown;
-		document.getElementById('aggre').checked = prefs.aggressive;
-		document.getElementById('winLoc').checked = prefs.windowLoc;
-		document.getElementById('auto').checked = prefs.auto;
-		document.getElementById('autoSet').checked = prefs.autoSet;
 		document.getElementById('chgLog').checked = prefs.chgLog;
 		document.getElementById('badge').checked = prefs.badge;
 		document.getElementById('cmDownPanel').checked = prefs.cmDownPanel;
@@ -79,7 +60,6 @@ function dpHChange(e) {
 		e.target.value = -5000;
 	else if (e.target.value == "")
 		e.target.value = 0;
-	console.log(e);
 	document.getElementById('dpHeight').value = e.target.value;
 	document.getElementById('dpHeightN').value = e.target.value;
 }

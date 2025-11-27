@@ -1,10 +1,10 @@
 {
   "extensionName": {
-    "message": "Aria2 Download Manager Integration",
+    "message": "ArcIntegration",
     "description": "Name of the extension."
   },
   "extensionDescription": {
-    "message": "Replace built-in download manager with Aria2. Automatically captures downloads and sends them to Aria2.",
+    "message": "Browser extension to integrate with Aria2. Automatically captures downloads and sends them to Aria2.",
     "description": "Description of the extension."
   },
   "translator": {
@@ -361,10 +361,11 @@
     "message": "Stopped",
     "description": ""
   },
-  "openAriaNg": {
-    "message": "AriaNg",
+  "openWebUI": {
+    "message": "Web UI",
     "description": ""
   },
+
   "settings": {
     "message": "Settings",
     "description": ""
@@ -397,6 +398,34 @@
     "message": "Remove",
     "description": ""
   },
+  "blockMenuTitle": {
+    "message": "Block Options",
+    "description": ""
+  },
+  "allowMenuTitle": {
+    "message": "Allow Options",
+    "description": ""
+  },
+  "blockExact": {
+    "message": "Block exact domain",
+    "description": ""
+  },
+  "blockWildcard": {
+    "message": "Block all subdomains (*.domain)",
+    "description": ""
+  },
+  "allowExact": {
+    "message": "Allow exact domain",
+    "description": ""
+  },
+  "allowWildcard": {
+    "message": "Allow all subdomains (*.domain)",
+    "description": ""
+  },
+  "cancel": {
+    "message": "Cancel",
+    "description": ""
+  },
   "OP_quickBypass": {
     "message": "Quick Bypass",
     "description": ""
@@ -409,52 +438,80 @@
     "message": "Hold Alt key while clicking to use browser's native download",
     "description": ""
   },
+  "OP_add": {
+    "message": "Add",
+    "description": ""
+  },
+  "OP_remove": {
+    "message": "Remove",
+    "description": ""
+  },
+  "OP_alreadyExists": {
+    "message": "Already in the list",
+    "description": ""
+  },
+  "OP_whitelist": {
+    "message": "Whitelist (Allow Only)",
+    "description": ""
+  },
+  "OP_blacklist": {
+    "message": "Blacklist (Block Only)",
+    "description": ""
+  },
   "OP_siteFilter": {
     "message": "Site Filter",
     "description": ""
   },
-  "OPN_siteFilterHint": {
-    "message": "One pattern per line. Use * as wildcard (e.g., *.example.com)",
+  "OP_siteFilterMode": {
+    "message": "Filter Mode",
     "description": ""
   },
-  "OP_allowedSites": {
-    "message": "Allowed Sites (Whitelist)",
+  "OPN_siteFilterMode": {
+    "message": "Whitelist: Only capture downloads from listed sites. Blacklist: Never capture downloads from listed sites.",
     "description": ""
   },
-  "OPN_allowedSites": {
-    "message": "Always capture downloads from these sites",
+  "OP_siteList": {
+    "message": "Site List",
     "description": ""
   },
-  "OP_blockedSites": {
-    "message": "Blocked Sites (Blacklist)",
+  "OPN_siteListHint": {
+    "message": "Use * as wildcard (e.g., *.example.com matches www.example.com, api.example.com)",
     "description": ""
   },
-  "OPN_blockedSites": {
-    "message": "Never capture downloads from these sites",
+  "OPN_siteInputPlaceholder": {
+    "message": "example.com or *.example.com",
+    "description": ""
+  },
+  "OPN_noSites": {
+    "message": "No sites added",
     "description": ""
   },
   "OP_extFilter": {
     "message": "File Extension Filter",
     "description": ""
   },
-  "OPN_extFilterHint": {
-    "message": "One extension per line, include the dot (e.g., .zip)",
+  "OP_extFilterMode": {
+    "message": "Filter Mode",
     "description": ""
   },
-  "OP_allowedExts": {
-    "message": "Allowed Extensions (Whitelist)",
+  "OPN_extFilterMode": {
+    "message": "Whitelist: Only capture these file types. Blacklist: Never capture these file types.",
     "description": ""
   },
-  "OPN_allowedExts": {
-    "message": "Only capture these file types (leave empty for all)",
+  "OP_extList": {
+    "message": "Extension List",
     "description": ""
   },
-  "OP_blockedExts": {
-    "message": "Blocked Extensions (Blacklist)",
+  "OPN_extListHint": {
+    "message": "Include the dot (e.g., .zip, .exe, .dmg)",
     "description": ""
   },
-  "OPN_blockedExts": {
-    "message": "Never capture these file types",
+  "OPN_extInputPlaceholder": {
+    "message": ".zip or .exe",
+    "description": ""
+  },
+  "OPN_noExts": {
+    "message": "No extensions added",
     "description": ""
   },
   "OP_sizeFilter": {
@@ -527,6 +584,18 @@
   },
   "OP_serverActivated": {
     "message": "Server activated",
+    "description": ""
+  },
+  "OP_default": {
+    "message": "DEFAULT",
+    "description": ""
+  },
+  "OP_setDefault": {
+    "message": "Set Default",
+    "description": ""
+  },
+  "OP_defaultSet": {
+    "message": "Default server set for AriaNg injection",
     "description": ""
   },
   "OP_deleteComplete": {

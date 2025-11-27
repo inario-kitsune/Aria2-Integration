@@ -1,7 +1,7 @@
 {
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "default_locale": "en",
   "manifest_version": 2,
   "permissions": [
@@ -17,7 +17,12 @@
     "<all_urls>"
   ],
   "background": {
-    "scripts": ["lib/aria2.bundle.js", "lib/tools.js", "config.js", "common.js"]
+    "scripts": [
+      "lib/aria2.bundle.js",
+      "lib/tools.js",
+      "config.js",
+      "common.js"
+    ]
   },
   "browser_action": {
     "default_popup": "data/action/index.html",
@@ -43,19 +48,25 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["data/content/altKeyDetector.js"],
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "data/content/altKeyDetector.js"
+      ],
       "run_at": "document_start",
       "all_frames": true
     }
   ],
-  "content_security_policy": "script-src 'self'; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "browser_specific_settings": {
     "gecko": {
       "id": "{588549ab-78d4-4413-aa1f-b7c433eec2a1}",
       "strict_min_version": "58.0",
       "data_collection_permissions": {
-        "required": ["none"],
+        "required": [
+          "none"
+        ],
         "optional": []
       }
     }

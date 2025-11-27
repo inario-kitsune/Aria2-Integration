@@ -61,6 +61,10 @@ function handleHashChange() {
 
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
+  // Display extension version
+  const manifest = browser.runtime.getManifest();
+  document.getElementById("versionBadge").textContent = `v${manifest.version}`;
+
   // Apply translations
   applyI18n();
 

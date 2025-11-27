@@ -1,14 +1,13 @@
 "use strict";
 var request = [];
 var globalD = [];
-var aggressive = false;
 var mon;
 
-// 白/黑名单过滤变量
-var allowedSites = [];
-var blockedSites = [];
-var allowedExts = [];
-var blockedExts = [];
+// 过滤变量
+var filterSites = [];
+var filterExts = [];
+var siteFilterMode = "blacklist"; // 'whitelist' or 'blacklist'
+var extFilterMode = "blacklist"; // 'whitelist' or 'blacklist'
 var minFileSize = 0;
 var altKeyBypass = true;
 var altKeyPressed = false;
@@ -91,8 +90,6 @@ function sendTo(url, fileName, filePath, header, serverId, onFallback) {
       } else {
         sendViaHttp(aria2, url, params, fileName, onFallback);
       }
-
-      console.log("Sending to server:", server.name, url, params);
     },
   );
 }
@@ -131,14 +128,14 @@ function sendViaWebSocket(aria2, url, params, fileName, options, onFallback) {
                 aria2.close();
               },
               function (err) {
-                console.log("Error after retry", err);
+                console.error("WebSocket addUri failed after retry:", err);
                 notifyWithFallback(fileName, url, onFallback);
                 aria2.close();
               },
             );
           },
           (err) => {
-            console.log("WebSocket connection failed again", err);
+            console.error("WebSocket connection failed on retry:", err);
             notifyWithFallback(fileName, url, onFallback);
           },
         );
@@ -159,7 +156,7 @@ function retryWebSocket(aria2, url, params, fileName, options, onFallback) {
         aria2.close();
       },
       function (err) {
-        console.log("Error after retry", err);
+        console.error("WebSocket addUri failed after retry:", err);
         notifyWithFallback(fileName, url, onFallback);
         aria2.close();
       },
@@ -187,7 +184,7 @@ function sendViaHttp(aria2, url, params, fileName, onFallback) {
             );
           },
           function (err) {
-            console.log("Error after retry", err);
+            console.error("HTTP addUri failed after retry:", err);
             notifyWithFallback(fileName, url, onFallback);
           },
         );
@@ -260,12 +257,12 @@ function tmpopen(url, fileName, header) {
       opening.then(
         () => {},
         (e) => {
-          console.log(e);
+          console.error("Failed to open download:", e);
         },
       );
     },
     (e) => {
-      console.log(e);
+      console.error("Failed to download temp file:", e);
     },
   );
 }
@@ -371,7 +368,6 @@ function handleMessage(request, sender, sendResponse) {
       });
       break;
     default:
-      console.log("Message from the content script: " + request.get);
       sendResponse({
         response: "Response from background script",
       });
@@ -479,14 +475,18 @@ function getRequestHeaders(d, ua) {
 }
 
 // 通配符匹配函数 (支持 * 通配符)
+// * 匹配除点号外的任意字符 (单个子域名部分)
+// 例如: *.example.com 匹配 www.example.com 但不匹配 sub.www.example.com
 function matchWildcard(str, pattern) {
   if (!pattern || !str) return false;
-  const regex = new RegExp(
-    "^" +
-      pattern.replace(/[.+^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*") +
-      "$",
-    "i",
-  );
+
+  // 转义点号
+  let regexPattern = pattern.replace(/\./g, "\\.");
+
+  // 处理 * (匹配除点号外的任意字符)
+  regexPattern = regexPattern.replace(/\*/g, "[^.]*");
+
+  const regex = new RegExp("^" + regexPattern + "$", "i");
   return regex.test(str);
 }
 
@@ -506,11 +506,29 @@ function getFileExtension(filename) {
   return match ? "." + match[1].toLowerCase() : "";
 }
 
+// 获取 Referer 的 hostname
+function getRefererHostname(d) {
+  // 先从 request 数组中查找
+  const reqId = request.findIndex((x) => x.requestId === d.requestId);
+  if (reqId >= 0 && request[reqId].requestHeaders) {
+    const refererIdx = request[reqId].requestHeaders.findIndex(
+      (x) => x.name.toLowerCase() === "referer"
+    );
+    if (refererIdx >= 0) {
+      return getHostname(request[reqId].requestHeaders[refererIdx].value);
+    }
+  }
+  return "";
+}
+
 function isException(d) {
   const url = d.url;
   const hostname = getHostname(url);
   const filename = getFileNameURL(url);
   const ext = getFileExtension(filename);
+
+  // 获取 Referer (来源页面)
+  const refererHostname = getRefererHostname(d);
 
   // 获取文件大小
   const contentLengthIdx = d.responseHeaders.findIndex(
@@ -528,43 +546,41 @@ function isException(d) {
     return true;
   }
 
-  // 1. 站点白名单检测 - 如果匹配则强制拦截（不是例外）
-  for (const pattern of allowedSites) {
-    if (pattern && matchWildcard(hostname, pattern)) {
-      console.log("Allowed site matched:", hostname, pattern);
-      // 继续检查其他条件，但站点是允许的
-      break;
-    }
-  }
+  // 站点过滤检测
+  const siteMatched = filterSites.some((pattern) =>
+    pattern && (matchWildcard(hostname, pattern) || matchWildcard(refererHostname, pattern))
+  );
 
-  // 2. 站点黑名单检测 - 如果匹配则不拦截（是例外）
-  for (const pattern of blockedSites) {
-    if (pattern && matchWildcard(hostname, pattern)) {
-      console.log("Blocked site matched:", hostname, pattern);
+  if (siteFilterMode === "whitelist") {
+    // 白名单模式：如果有站点列表且不匹配，则不拦截
+    if (filterSites.length > 0 && !siteMatched) {
+      console.log("Site not in whitelist:", hostname, "referer:", refererHostname);
+      return true;
+    }
+  } else {
+    // 黑名单模式：如果匹配则不拦截
+    if (siteMatched) {
+      console.log("Site in blacklist:", hostname, "or referer:", refererHostname);
       return true;
     }
   }
 
-  // 3. 扩展名白名单检测 - 如果设置了白名单且不匹配则不拦截
-  if (allowedExts.length > 0 && allowedExts.some((e) => e)) {
-    let extAllowed = false;
-    for (const pattern of allowedExts) {
-      if (pattern && matchWildcard(ext, pattern)) {
-        extAllowed = true;
-        break;
+  // 扩展名过滤检测
+  if (ext) {
+    const extMatched = filterExts.some((pattern) => pattern && matchWildcard(ext, pattern));
+
+    if (extFilterMode === "whitelist") {
+      // 白名单模式：如果有扩展名列表且不匹配，则不拦截
+      if (filterExts.length > 0 && !extMatched) {
+        console.log("Extension not in whitelist:", ext);
+        return true;
       }
-    }
-    if (!extAllowed && ext) {
-      console.log("Extension not in allowed list:", ext);
-      return true;
-    }
-  }
-
-  // 4. 扩展名黑名单检测 - 如果匹配则不拦截
-  for (const pattern of blockedExts) {
-    if (pattern && matchWildcard(ext, pattern)) {
-      console.log("Blocked extension matched:", ext, pattern);
-      return true;
+    } else {
+      // 黑名单模式：如果匹配则不拦截
+      if (extMatched) {
+        console.log("Extension in blacklist:", ext);
+        return true;
+      }
     }
   }
 
@@ -645,7 +661,7 @@ async function prepareDownload(d) {
       if (tabsInfo[0].url == "about:blank") browser.tabs.remove(tabsInfo[0].id);
     },
     (e) => {
-      console.log(e);
+      console.error("Failed to get tab info:", e);
     },
   );
 }
@@ -656,8 +672,8 @@ function observeRequest(d) {
 
 function observeResponse(d) {
   //console.log(d.responseHeaders);
-  // bug0001: goo.gl
-  if (d.statusCode == 200 || aggressive) {
+  // Only capture downloads with status code 200
+  if (d.statusCode == 200) {
     if (
       d.responseHeaders.find(
         (x) => x.name.toLowerCase() === "content-disposition",
@@ -666,7 +682,8 @@ function observeResponse(d) {
       var contentDisposition = d.responseHeaders
         .find((x) => x.name.toLowerCase() === "content-disposition")
         .value.toLowerCase();
-      if (contentDisposition.slice(0, 10) == "attachment" || aggressive) {
+      // Only capture if Content-Disposition is "attachment"
+      if (contentDisposition.slice(0, 10) == "attachment") {
         //console.log(contentDisposition);
         if (isException(d)) return { cancel: false };
         prepareDownload(d);
@@ -680,6 +697,7 @@ function observeResponse(d) {
       var contentType = d.responseHeaders
         .find((x) => x.name.toLowerCase() === "content-type")
         .value.toLowerCase();
+      // Capture application/* types except web content
       if (
         contentType.slice(0, 11) == "application" &&
         contentType.slice(12, 15) != "pdf" &&
@@ -693,31 +711,20 @@ function observeResponse(d) {
         if (isException(d)) return { cancel: false };
         prepareDownload(d);
         return { cancel: true };
-      } else if (aggressive) {
-        if (contentType.slice(0, 5) == "image") {
-          //console.log(contentType);
-          if (isException(d)) return { cancel: false };
-          prepareDownload(d);
-          return { cancel: true };
-        } else if (
-          contentType.slice(0, 4) == "text" &&
-          contentType.slice(5, 9) != "html"
-        ) {
-          //console.log(contentType);
-          if (isException(d)) return { cancel: false };
-          prepareDownload(d);
-          return { cancel: true };
-        } else if (contentType.slice(0, 5) == "video") {
-          //console.log(contentType);
-          if (isException(d)) return { cancel: false };
-          prepareDownload(d);
-          return { cancel: true };
-        } else if (contentType.slice(0, 5) == "audio") {
-          //console.log(contentType);
-          if (isException(d)) return { cancel: false };
-          prepareDownload(d);
-          return { cancel: true };
-        }
+      }
+      // Capture video files
+      if (contentType.slice(0, 5) == "video") {
+        //console.log(contentType);
+        if (isException(d)) return { cancel: false };
+        prepareDownload(d);
+        return { cancel: true };
+      }
+      // Capture audio files
+      if (contentType.slice(0, 5) == "audio") {
+        //console.log(contentType);
+        if (isException(d)) return { cancel: false };
+        prepareDownload(d);
+        return { cancel: true };
       }
     }
   }
@@ -832,10 +839,9 @@ function cmCallback(info, tab) {
             sendTo(url, "", "", requestHeaders, server);
           }
         });
-        console.log(info);
       },
       (e) => {
-        console.log("Error", e);
+        console.error("Failed to get request headers:", e);
         var requestHeaders = "[";
         requestHeaders += '"Referer: ' + info.pageUrl + '"';
         requestHeaders += "]";
@@ -852,7 +858,6 @@ function cmCallback(info, tab) {
             sendTo(url, "", "", requestHeaders, server);
           }
         });
-        console.log(info);
       },
     );
   }
@@ -942,7 +947,7 @@ function contextMenus(enabled, cmDownPanel) {
       browser.storage.local.get(config.command.guess, (item) => {
         if (d.reason == "update" && item.chgLog == true) {
           browser.tabs.create({
-            url: "https://github.com/RossWang/Aria2-Integration/blob/master/CHANGELOG.md",
+            url: "https://github.com/inario-kitsune/Aria2-Integration/blob/master/CHANGELOG.md",
           });
         }
       });
@@ -961,22 +966,21 @@ function parseTextList(text) {
 
 function loadSettings() {
   browser.storage.local.get(config.command.guess, (item) => {
-    aggressive = item.aggressive;
     contextMenus(item.menu, item.cmDownPanel);
 
-    // 加载白/黑名单配置
-    allowedSites = parseTextList(item.allowedSites);
-    blockedSites = parseTextList(item.blockedSites);
-    allowedExts = parseTextList(item.allowedExts);
-    blockedExts = parseTextList(item.blockedExts);
+    // 加载过滤配置
+    filterSites = parseTextList(item.filterSites || "");
+    filterExts = parseTextList(item.filterExts || "");
+    siteFilterMode = item.siteFilterMode || "blacklist";
+    extFilterMode = item.extFilterMode || "blacklist";
     minFileSize = Number(item.minFileSize) || 0;
     altKeyBypass = item.altKeyBypass !== false; // 默认启用
 
     console.log("Filter settings loaded:", {
-      allowedSites,
-      blockedSites,
-      allowedExts,
-      blockedExts,
+      filterSites,
+      filterExts,
+      siteFilterMode,
+      extFilterMode,
       minFileSize,
       altKeyBypass,
     });

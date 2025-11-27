@@ -2,6 +2,7 @@
 
 let servers = [];
 let activeServerId = "";
+let defaultServerId = ""; // Default server ID
 let editingServerId = null;
 
 // 解析服务器列表
@@ -35,6 +36,7 @@ function renderServerList() {
 
   servers.forEach((server) => {
     const isActive = server.id === activeServerId;
+    const isDefault = server.id === defaultServerId;
     const serverEl = document.createElement("div");
     serverEl.className = `server-item ${isActive ? "active" : ""}`;
     serverEl.dataset.serverId = server.id;
@@ -58,6 +60,15 @@ function renderServerList() {
     nameDiv.className = "server-name";
     nameDiv.textContent = server.name || "Unnamed Server";
 
+    // Add default badge
+    if (isDefault) {
+      const badge = document.createElement("span");
+      badge.className = "default-badge";
+      badge.dataset.message = "OP_default";
+      badge.textContent = "DEFAULT";
+      nameDiv.appendChild(badge);
+    }
+
     const detailsDiv = document.createElement("div");
     detailsDiv.className = "server-details";
     detailsDiv.textContent = details;
@@ -69,6 +80,19 @@ function renderServerList() {
     // Create server actions
     const actionsDiv = document.createElement("div");
     actionsDiv.className = "server-actions";
+
+    // Add "Set as Default" button if not already default
+    if (!isDefault) {
+      const defaultBtn = document.createElement("button");
+      defaultBtn.className = "btn-icon default-btn";
+      defaultBtn.dataset.id = server.id;
+      defaultBtn.textContent = "⭐ ";
+      const defaultSpan = document.createElement("span");
+      defaultSpan.dataset.message = "OP_setDefault";
+      defaultSpan.textContent = "Set Default";
+      defaultBtn.appendChild(defaultSpan);
+      actionsDiv.appendChild(defaultBtn);
+    }
 
     const editBtn = document.createElement("button");
     editBtn.className = "btn-icon edit-btn";
@@ -104,6 +128,15 @@ function renderServerList() {
     listEl.appendChild(serverEl);
   });
 
+  // 绑定设为默认按钮
+  document.querySelectorAll(".default-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const id = btn.dataset.id;
+      setDefaultServer(id);
+    });
+  });
+
   // 绑定编辑和删除按钮
   document.querySelectorAll(".edit-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -132,6 +165,14 @@ function setActiveServer(serverId) {
   showStatus(
     browser.i18n.getMessage("OP_serverActivated") || "Server activated",
   );
+}
+
+// Set default server
+function setDefaultServer(serverId) {
+  defaultServerId = serverId;
+  saveServers();
+  renderServerList();
+  showStatus(browser.i18n.getMessage("OP_defaultSet") || "Default server set");
 }
 
 // 添加新服务器
@@ -260,11 +301,10 @@ function saveServers() {
     {
       rpcServers: JSON.stringify(servers),
       activeServerId: activeServerId,
+      defaultServerId: defaultServerId, // 保存默认服务器 ID
       initialize: servers.length > 0, // 至少有一个服务器时才算初始化
     },
-    () => {
-      console.log("Servers saved:", servers);
-    },
+    () => {},
   );
 }
 
@@ -273,10 +313,23 @@ function loadServers() {
   browser.storage.local.get(config.command.guess, (prefs) => {
     servers = parseServers(prefs.rpcServers);
     activeServerId = prefs.activeServerId || "";
+    defaultServerId = prefs.defaultServerId || "";
 
     // 如果没有激活的服务器但有服务器列表，激活第一个
     if (!activeServerId && servers.length > 0) {
       activeServerId = servers[0].id;
+    }
+
+    // 如果没有默认服务器但有服务器列表，设置第一个为默认
+    if (!defaultServerId && servers.length > 0) {
+      defaultServerId = servers[0].id;
+    }
+
+    // 如果有需要保存的更改
+    if (
+      (!prefs.activeServerId && activeServerId) ||
+      (!prefs.defaultServerId && defaultServerId)
+    ) {
       saveServers();
     }
 

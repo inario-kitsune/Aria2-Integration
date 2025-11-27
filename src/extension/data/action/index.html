@@ -268,6 +268,51 @@
                 background: var(--bg-hover);
             }
 
+            /* Block/Allow Options Menu */
+            .block-menu,
+            .allow-menu {
+                margin-top: 8px;
+                padding: 8px;
+                background: var(--bg-secondary);
+                border-radius: 6px;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .block-menu-title,
+            .allow-menu-title {
+                font-size: 11px;
+                font-weight: 600;
+                color: var(--text-secondary);
+                margin-bottom: 2px;
+            }
+
+            .block-option-btn,
+            .allow-option-btn {
+                padding: 6px 10px;
+                border: none;
+                border-radius: 4px;
+                font-size: 11px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.15s ease;
+                text-align: left;
+                background: var(--bg-primary);
+                color: var(--text-primary);
+            }
+
+            .block-option-btn:hover,
+            .allow-option-btn:hover {
+                background: var(--bg-hover);
+            }
+
+            .block-option-btn.cancel,
+            .allow-option-btn.cancel {
+                color: var(--text-secondary);
+                margin-top: 2px;
+            }
+
             /* Speed Section */
             .speed-section {
                 display: flex;
@@ -340,24 +385,25 @@
 
             /* Actions Section */
             .actions-section {
-                display: flex;
-                gap: 8px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
                 padding-top: 12px;
             }
 
             .btn {
-                flex: 1;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 gap: 6px;
-                padding: 8px 12px;
+                padding: 10px 16px;
                 border: none;
                 border-radius: 8px;
-                font-size: 12px;
+                font-size: 13px;
                 font-weight: 500;
                 cursor: pointer;
                 transition: all 0.15s ease;
+                white-space: nowrap;
             }
 
             .btn-primary {
@@ -450,6 +496,7 @@
                             class="site-btn allow"
                             id="btnAllow"
                             data-i18n="allow"
+                            style="display: none"
                         >
                             Allow
                         </button>
@@ -457,6 +504,7 @@
                             class="site-btn block"
                             id="btnBlock"
                             data-i18n="block"
+                            style="display: none"
                         >
                             Block
                         </button>
@@ -469,6 +517,60 @@
                             Remove
                         </button>
                     </div>
+                </div>
+                <!-- Block Options Menu (Initially hidden) -->
+                <div class="block-menu" id="blockMenu" style="display: none">
+                    <div class="block-menu-title" data-i18n="blockMenuTitle">
+                        Block Options
+                    </div>
+                    <button
+                        class="block-option-btn"
+                        id="btnBlockExact"
+                        data-i18n="blockExact"
+                    >
+                        Block exact domain
+                    </button>
+                    <button
+                        class="block-option-btn"
+                        id="btnBlockWildcard"
+                        data-i18n="blockWildcard"
+                    >
+                        Block all subdomains
+                    </button>
+                    <button
+                        class="block-option-btn cancel"
+                        id="btnBlockCancel"
+                        data-i18n="cancel"
+                    >
+                        Cancel
+                    </button>
+                </div>
+                <!-- Allow Options Menu (Initially hidden) -->
+                <div class="allow-menu" id="allowMenu" style="display: none">
+                    <div class="allow-menu-title" data-i18n="allowMenuTitle">
+                        Allow Options
+                    </div>
+                    <button
+                        class="allow-option-btn"
+                        id="btnAllowExact"
+                        data-i18n="allowExact"
+                    >
+                        Allow exact domain
+                    </button>
+                    <button
+                        class="allow-option-btn"
+                        id="btnAllowWildcard"
+                        data-i18n="allowWildcard"
+                    >
+                        Allow all subdomains
+                    </button>
+                    <button
+                        class="allow-option-btn cancel"
+                        id="btnAllowCancel"
+                        data-i18n="cancel"
+                    >
+                        Cancel
+                    </button>
                 </div>
             </div>
 
@@ -512,12 +614,15 @@
 
             <!-- Actions -->
             <div class="actions-section">
-                <button class="btn btn-primary" id="btnAriaNg">
+                <button class="btn btn-primary" id="btnWebUI">
                     <svg class="btn-icon" viewBox="0 0 24 24">
-                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                        <path
+                            d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"
+                        />
                     </svg>
-                    <span data-i18n="openAriaNg">AriaNg</span>
+                    <span data-i18n="openWebUI">Web UI</span>
                 </button>
+
                 <button class="btn btn-secondary" id="btnSettings">
                     <svg class="btn-icon" viewBox="0 0 24 24">
                         <path

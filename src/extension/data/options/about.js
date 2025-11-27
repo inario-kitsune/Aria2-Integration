@@ -1,6 +1,10 @@
 "use strict";
 
 function restore() {
+  // Display extension version from manifest
+  const manifest = browser.runtime.getManifest();
+  document.getElementById("extensionVersion").textContent = `Version ${manifest.version}`;
+
   // Apply i18n
   document.querySelectorAll("[data-message]").forEach((n) => {
     n.textContent = browser.i18n.getMessage(n.dataset.message);
@@ -18,8 +22,6 @@ function restore() {
   browser.storage.local.get(
     ["rpcServers", "activeServerId"],
     function (storage) {
-      console.log("About page - Storage:", storage);
-
       // Parse server list
       let servers = [];
       try {
@@ -51,8 +53,6 @@ function restore() {
         path: "/" + (server.interf || "jsonrpc"),
       };
 
-      console.log("About page - Aria2 options:", options);
-
       const aria2 = new Aria2Client(options);
 
       if (isWebSocket) {
@@ -60,12 +60,11 @@ function restore() {
           .open()
           .then(() => aria2.getVersion())
           .then((res) => {
-            console.log("Aria2 version:", res);
             updateStatus(true, "Connected", "v" + res.version);
             aria2.close();
           })
           .catch((err) => {
-            console.log("Connection error:", err);
+            console.error("WebSocket connection error:", err);
             updateStatus(false, "Disconnected");
             aria2.close();
           });
@@ -74,11 +73,10 @@ function restore() {
         aria2
           .getVersion()
           .then((res) => {
-            console.log("Aria2 version:", res);
             updateStatus(true, "Connected", "v" + res.version);
           })
           .catch((err) => {
-            console.log("getVersion error:", err);
+            console.error("HTTP getVersion error:", err);
             updateStatus(false, "Disconnected");
           });
       }

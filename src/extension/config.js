@@ -15,12 +15,17 @@ config.command = {
       cmDownPanel: true,
       downPanel: true,
       ua: false,
-      // 白/黑名单过滤
-      allowedSites: "", // 站点白名单 - 始终拦截 (每行一个)
-      blockedSites: "", // 站点黑名单 - 永不拦截 (每行一个)
-      allowedExts: "", // 扩展名白名单 (每行一个，如 .zip)
-      blockedExts: "", // 扩展名黑名单 (每行一个)
+      // 过滤设置
+      filterSites: "", // 站点列表 (每行一个)
+      siteFilterMode: "blacklist", // 站点过滤模式: 'whitelist' 或 'blacklist'
+      filterExts: "", // 扩展名列表 (每行一个，如 .zip)
+      extFilterMode: "blacklist", // 扩展名过滤模式: 'whitelist' 或 'blacklist'
       minFileSize: 0, // 最小文件大小 (MB)，小于此值不拦截
+      // 旧版兼容（用于迁移）
+      allowedSites: "", // 已弃用 - 使用 filterSites + siteFilterMode
+      blockedSites: "", // 已弃用 - 使用 filterSites + siteFilterMode
+      allowedExts: "", // 已弃用 - 使用 filterExts + extFilterMode
+      blockedExts: "", // 已弃用 - 使用 filterExts + extFilterMode
       // Alt 键绕过
       altKeyBypass: true, // 启用 Alt 键绕过
       // RPC 服务器列表

@@ -12,6 +12,14 @@ const elements = {
   btnAllow: document.getElementById("btnAllow"),
   btnBlock: document.getElementById("btnBlock"),
   btnRemove: document.getElementById("btnRemove"),
+  blockMenu: document.getElementById("blockMenu"),
+  allowMenu: document.getElementById("allowMenu"),
+  btnBlockExact: document.getElementById("btnBlockExact"),
+  btnBlockWildcard: document.getElementById("btnBlockWildcard"),
+  btnBlockCancel: document.getElementById("btnBlockCancel"),
+  btnAllowExact: document.getElementById("btnAllowExact"),
+  btnAllowWildcard: document.getElementById("btnAllowWildcard"),
+  btnAllowCancel: document.getElementById("btnAllowCancel"),
   speedSection: document.getElementById("speedSection"),
   statsSection: document.getElementById("statsSection"),
   offlineMessage: document.getElementById("offlineMessage"),
@@ -20,15 +28,15 @@ const elements = {
   activeCount: document.getElementById("activeCount"),
   waitingCount: document.getElementById("waitingCount"),
   stoppedCount: document.getElementById("stoppedCount"),
-  btnAriaNg: document.getElementById("btnAriaNg"),
+  btnWebUI: document.getElementById("btnWebUI"),
   btnSettings: document.getElementById("btnSettings"),
 };
 
 let aria2 = null;
 let refreshInterval = null;
 let currentHostname = "";
-let allowedSites = [];
-let blockedSites = [];
+let filterSites = [];
+let siteFilterMode = "blacklist";
 
 // Utility: Format bytes to human readable
 function formatSpeed(bytes) {
@@ -53,16 +61,17 @@ function arrayToText(arr) {
   return arr.filter((s) => s).join("\n");
 }
 
-// Check if hostname is in a list
+// Check if hostname is in a list (using wildcard matching)
 function isInList(list, hostname) {
   return list.some((pattern) => {
     if (!pattern) return false;
-    const regex = new RegExp(
-      "^" +
-        pattern.replace(/[.+^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*") +
-        "$",
-      "i",
-    );
+
+    // Same wildcard logic as common.js
+    // * matches any characters except dots (single subdomain part)
+    let regexPattern = pattern.replace(/\./g, "\\.");
+    regexPattern = regexPattern.replace(/\*/g, "[^.]*");
+
+    const regex = new RegExp("^" + regexPattern + "$", "i");
     return regex.test(hostname);
   });
 }
@@ -82,20 +91,18 @@ function updateSiteUI() {
 
   elements.siteHostname.textContent = currentHostname;
 
-  const inAllowed = isInList(allowedSites, currentHostname);
-  const inBlocked = isInList(blockedSites, currentHostname);
+  const inList = isInList(filterSites, currentHostname);
 
-  if (inAllowed) {
-    elements.siteStatus.textContent =
-      browser.i18n.getMessage("siteAllowed") || "Allowed";
-    elements.siteStatus.className = "site-status allowed";
-    elements.btnAllow.style.display = "none";
-    elements.btnBlock.style.display = "none";
-    elements.btnRemove.style.display = "";
-  } else if (inBlocked) {
-    elements.siteStatus.textContent =
-      browser.i18n.getMessage("siteBlocked") || "Blocked";
-    elements.siteStatus.className = "site-status blocked";
+  if (inList) {
+    if (siteFilterMode === "whitelist") {
+      elements.siteStatus.textContent =
+        browser.i18n.getMessage("siteAllowed") || "Allowed";
+      elements.siteStatus.className = "site-status allowed";
+    } else {
+      elements.siteStatus.textContent =
+        browser.i18n.getMessage("siteBlocked") || "Blocked";
+      elements.siteStatus.className = "site-status blocked";
+    }
     elements.btnAllow.style.display = "none";
     elements.btnBlock.style.display = "none";
     elements.btnRemove.style.display = "";
@@ -103,58 +110,85 @@ function updateSiteUI() {
     elements.siteStatus.textContent =
       browser.i18n.getMessage("currentSite") || "Current site";
     elements.siteStatus.className = "site-status";
-    elements.btnAllow.style.display = "";
-    elements.btnBlock.style.display = "";
+    elements.btnAllow.style.display = siteFilterMode === "whitelist" ? "" : "none";
+    elements.btnBlock.style.display = siteFilterMode === "blacklist" ? "" : "none";
     elements.btnRemove.style.display = "none";
   }
 }
 
-// Add site to allowed list
-function addToAllowed() {
+// Get wildcard pattern for current hostname
+function getWildcardPattern() {
+  if (!currentHostname) return "";
+  const parts = currentHostname.split(".");
+  if (parts.length <= 2) {
+    // For top-level domains like "example.com", use *.example.com
+    return "*." + currentHostname;
+  }
+  // For subdomains like "www.example.com", use *.example.com (remove first part)
+  return "*." + parts.slice(1).join(".");
+}
+
+// Show block menu
+function showBlockMenu() {
+  elements.blockMenu.style.display = "flex";
+  elements.allowMenu.style.display = "none";
+}
+
+// Show allow menu
+function showAllowMenu() {
+  elements.allowMenu.style.display = "flex";
+  elements.blockMenu.style.display = "none";
+}
+
+// Hide menus
+function hideMenus() {
+  elements.blockMenu.style.display = "none";
+  elements.allowMenu.style.display = "none";
+}
+
+// Add site to list (exact match)
+function addToListExact() {
   if (!currentHostname) return;
 
-  // Remove from blocked if exists
-  blockedSites = blockedSites.filter((s) => s !== currentHostname);
-
-  // Add to allowed if not exists
-  if (!allowedSites.includes(currentHostname)) {
-    allowedSites.push(currentHostname);
+  if (!filterSites.includes(currentHostname)) {
+    filterSites.push(currentHostname);
   }
 
+  hideMenus();
   saveSiteLists();
 }
 
-// Add site to blocked list
-function addToBlocked() {
+// Add site to list (wildcard)
+function addToListWildcard() {
   if (!currentHostname) return;
+  const pattern = getWildcardPattern();
 
-  // Remove from allowed if exists
-  allowedSites = allowedSites.filter((s) => s !== currentHostname);
-
-  // Add to blocked if not exists
-  if (!blockedSites.includes(currentHostname)) {
-    blockedSites.push(currentHostname);
+  if (!filterSites.includes(pattern)) {
+    filterSites.push(pattern);
   }
 
+  hideMenus();
   saveSiteLists();
 }
 
-// Remove site from both lists
+// Remove site from list
 function removeFromLists() {
   if (!currentHostname) return;
 
-  allowedSites = allowedSites.filter((s) => s !== currentHostname);
-  blockedSites = blockedSites.filter((s) => s !== currentHostname);
+  const pattern = getWildcardPattern();
+  filterSites = filterSites.filter((s) => s !== currentHostname && s !== pattern);
 
   saveSiteLists();
 }
 
 // Save site lists to storage
 function saveSiteLists() {
+  const filterSitesText = arrayToText(filterSites);
+
   browser.storage.local.set(
     {
-      allowedSites: arrayToText(allowedSites),
-      blockedSites: arrayToText(blockedSites),
+      filterSites: filterSitesText,
+      siteFilterMode: siteFilterMode,
     },
     () => {
       updateSiteUI();
@@ -168,8 +202,8 @@ function saveSiteLists() {
 async function loadSiteInfo() {
   // Load site lists
   const prefs = await browser.storage.local.get(config.command.guess);
-  allowedSites = parseTextList(prefs.allowedSites);
-  blockedSites = parseTextList(prefs.blockedSites);
+  filterSites = parseTextList(prefs.filterSites);
+  siteFilterMode = prefs.siteFilterMode || "blacklist";
 
   // Get current tab hostname
   try {
@@ -313,59 +347,44 @@ function handleToggle(e) {
   });
 }
 
-// Open AriaNg
-function openAriaNg() {
-  browser.storage.local.get("initialize", (item) => {
-    if (!item.initialize) {
-      browser.runtime.openOptionsPage();
-      browser.notifications.create({
-        type: "basic",
-        iconUrl: "/data/icons/48.png",
-        title: browser.i18n.getMessage("extensionName"),
-        message: browser.i18n.getMessage("error_setConfig"),
-      });
-      return;
+// Open Web UI
+async function openWebUI() {
+  // Get current server config
+  const storage = await browser.storage.local.get([
+    "rpcServers",
+    "defaultServerId",
+  ]);
+
+  let config = null;
+
+  // Parse servers and get default server config
+  try {
+    const servers = JSON.parse(storage.rpcServers || "[]");
+    if (servers.length > 0) {
+      const defaultServerId = storage.defaultServerId || servers[0].id;
+      const server =
+        servers.find((s) => s.id === defaultServerId) || servers[0];
+
+      config = {
+        protocol: server.protocol || "ws",
+        host: server.host || "127.0.0.1",
+        port: server.port || "6800",
+        path: server.interf || "jsonrpc",
+        secret: server.token || "",
+      };
     }
+  } catch (e) {
+    console.warn("Failed to load server config:", e);
+  }
 
-    browser.storage.local.get(
-      ["rpcServers", "activeServerId", "autoSet"],
-      (storage) => {
-        let ariangUrl = "../../data/ariang/index.html";
+  // Build URL with config hash parameter
+  let url = "/data/webui/index.html";
+  if (config) {
+    url += "#config=" + encodeURIComponent(JSON.stringify(config));
+  }
 
-        if (storage.autoSet) {
-          // Parse server list
-          let servers = [];
-          try {
-            servers = JSON.parse(storage.rpcServers || "[]");
-          } catch (e) {
-            console.error("Failed to parse rpcServers", e);
-          }
-
-          if (servers.length > 0) {
-            // Get active server
-            const activeServerId = storage.activeServerId || servers[0].id;
-            const server =
-              servers.find((s) => s.id === activeServerId) || servers[0];
-
-            ariangUrl += "#!/settings/rpc/set/";
-            ariangUrl +=
-              (server.protocol || "ws") +
-              "/" +
-              server.host +
-              "/" +
-              server.port +
-              "/" +
-              (server.interf || "jsonrpc") +
-              "/" +
-              btoa(server.token || "");
-          }
-        }
-
-        browser.tabs.create({ url: ariangUrl });
-        window.close();
-      },
-    );
-  });
+  browser.tabs.create({ url });
+  window.close();
 }
 
 // Open Settings
@@ -399,10 +418,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Event listeners
   elements.switch.addEventListener("change", handleToggle);
-  elements.btnAllow.addEventListener("click", addToAllowed);
-  elements.btnBlock.addEventListener("click", addToBlocked);
+  elements.btnAllow.addEventListener("click", showAllowMenu);
+  elements.btnBlock.addEventListener("click", showBlockMenu);
   elements.btnRemove.addEventListener("click", removeFromLists);
-  elements.btnAriaNg.addEventListener("click", openAriaNg);
+
+  // Block menu listeners
+  elements.btnBlockExact.addEventListener("click", addToListExact);
+  elements.btnBlockWildcard.addEventListener("click", addToListWildcard);
+  elements.btnBlockCancel.addEventListener("click", hideMenus);
+
+  // Allow menu listeners
+  elements.btnAllowExact.addEventListener("click", addToListExact);
+  elements.btnAllowWildcard.addEventListener("click", addToListWildcard);
+  elements.btnAllowCancel.addEventListener("click", hideMenus);
+
+  elements.btnWebUI.addEventListener("click", openWebUI);
   elements.btnSettings.addEventListener("click", openSettings);
 
   // Initialize Aria2 connection
